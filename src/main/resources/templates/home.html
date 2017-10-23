@@ -2,7 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<p th:text="${message}"></p>
+<div class="row" th:if="${loginError}!=null">
+	<p th:text="${loginError}"></p>	
+</div>
+<div class="row" th:if="${user}==null">
+	<form th:action="@{/login/authenticate}" method="POST">
+		<div class="panel panel-default">
+			<div class="panel panel-heading">
+				Log In
+			</div>
+			<div class="panel panel-body">
+				<input type="text" name="firstName" />
+				<input type="text" name="lastName" />
+				<input type="password" name="password" />
+			</div>
+		</div>
+		<input type="submit"/>
+	</form>
+</div>
+<div class="row" th:unless="${user}==null">
+	<p>Welcome!</p>
+	<button th:href="@{songRequest/create}">Song Request</button>
+</div>
+
+<div class="row" th:if="${user}==null">
+<form th:action="@{/login/createUser}" method="POST">
+		<div class="panel panel-default">
+			<div class="panel panel-heading">
+				Create Account
+			</div>
+			<div class="panel panel-body">
+				<input type="text" name="firstName" />
+				<input type="text" name="lastName" />
+				<input type="password" name="password" />
+			</div>
+		</div>
+		<input type="submit"/>
+	</form>
+</div>
+
 
 </body>
 </html>
