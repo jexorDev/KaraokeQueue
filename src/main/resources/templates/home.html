@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+</head>
 <body>
 
 <div class="row" th:if="${loginError}!=null">
 	<p th:text="${loginError}"></p>	
 </div>
 <div class="row" th:if="${user}==null">
-	<form th:action="@{/login/authenticate}" method="POST">
-		<div class="panel panel-default">
-			<div class="panel panel-heading">
-				Log In
+	<div class="col-sm-12 col-lg-2">	
+		<form th:action="@{/login/authenticate}" method="POST">
+			<div class="panel panel-default">
+				<div class="panel panel-heading">
+					Log In
+				</div>
+				<div class="panel panel-body">
+					<input type="text" name="firstName" />
+					<input type="text" name="lastName" />
+					<input type="password" name="password" />
+					<input type="submit"/>
+				</div>
 			</div>
-			<div class="panel panel-body">
-				<input type="text" name="firstName" />
-				<input type="text" name="lastName" />
-				<input type="password" name="password" />
-			</div>
-		</div>
-		<input type="submit"/>
-	</form>
+			
+		</form>
+	</div>
 </div>
 <div class="row" th:unless="${user}==null">
 	<p>Welcome!</p>
@@ -35,9 +42,9 @@
 				<input type="text" name="firstName" />
 				<input type="text" name="lastName" />
 				<input type="password" name="password" />
+				<input type="submit"/>
 			</div>
-		</div>
-		<input type="submit"/>
+		</div>		
 	</form>
 </div>
 
