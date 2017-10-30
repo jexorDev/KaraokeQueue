@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <div th:replace="fragments/header :: header-css"/>    
 </head>
 <body>
+
+<div th:replace="fragments/header :: header"/>
+
 <div class="container">
-<div th:if="${param.error}">
- 	<h1 style="color:red">Username or Password is wrong. Please check again</h1>
- </div>
- <div th:if="${param.logout}">
-    <h1 style="color:blue">Logged out.</h1>
- </div>
- <form th:action="@{/request/create}"  method="post">
-     <div><label>Song Title: <input type="text" name="username" /></label></div>
-     <div><label>Artist: <input type="text" name="firstName"/></label></div>     
-     <div><input type="submit" value="Sign In"/>    </div>
- </form>
+
+
+<div class="panel panel-primary">
+ 	<div class="panel panel-heading">
+ 		Create Song Request
+ 	</div>
+ 	<div class="panel panel-body"> 	
+		 <form th:action="@{/request/create}"  method="post" th:object="${songRequest}">
+			 <div class="form-group">
+			    <label>Song Title:</label>
+			    <input type="text" th:field="*{songName}" class="form-control"/>				    
+			  </div>
+			  <div class="form-group">
+			    <label>Artist:</label>
+			    <input type="text" th:field="*{artistName}" class="form-control"/>				    
+			  </div>
+		      <button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</div>
+     
+ 
 </div>
 
 

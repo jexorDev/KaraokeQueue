@@ -24,7 +24,7 @@ public class UserController {
 	@RequestMapping(value="/user/create", method=RequestMethod.GET)
 	public ModelAndView index()
 	{
-		ModelAndView mv = new ModelAndView("createUser");
+		ModelAndView mv = new ModelAndView("user/create");
 		mv.addObject("user", new User());
 		return mv;
 	}

@@ -2,9 +2,13 @@ package com.example.demo.models;
 
 
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
+
+
 
 /**
  * A DAO for the entity User is simply created by extending the CrudRepository
@@ -16,9 +20,8 @@ import org.springframework.data.repository.CrudRepository;
  * @author netgloo
  */
 @Transactional
-public interface UserDao extends CrudRepository<User, Long> {
+public interface SongRequestDao extends CrudRepository<SongRequest, Long> {
 
-    //public User findByFirstNameAndLastNameAndPassword(String firstName, String lastName, String password);
-    public User findByUsername(String username);
+    public List<SongRequest> findByUserId(long userId);
 
-} // class UserDao
+}

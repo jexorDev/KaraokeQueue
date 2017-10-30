@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <div th:replace="fragments/header :: header-css"/>
+    <script th:src="@{/js/SongRequest/songRequest.js}"></script>
 </head>
 <body>
+
+<div th:replace="fragments/header :: header"/>
+
 <div class="container">
 
-<a th:href="@{/request/create}">New Song Request</a>
+<div class="panel panel-primary">
+	<div class="panel panel-heading">
+		Your requests
+	</div>
+	<div class="panel panel-body">
+		<div th:each="songRequest : ${songRequests}" class="well well-sm">
+			<h4><span class="label label-default">Song</span></h4>
+			<div th:text="${songRequest.songName}"></div>
+			<h4><span class="label label-default">Artist</span></h4>
+			<div th:text="${songRequest.artistName}"></div>
+			<br/>			
+			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
+				<button type="submit" class="btn btn-danger">
+					 Cancel Request
+				</button>			
+			</form>
+		</div>
+	</div>
+	<div class="panel panel-footer">	
+		<button type="button" class="btn btn-success"><a th:href="@{/request/create}">New Song Request</a></button>
+	</div>
+</div>
+
 </div>
 
 </body>
