@@ -16,7 +16,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author netgloo
  */
 @Transactional
-public interface UserDao extends CrudRepository<User, Long> {
+public interface UserRoleDao extends CrudRepository<UserRole, Long> {
 
     //public User findByFirstNameAndLastNameAndPassword(String firstName, String lastName, String password);
     //public User findByFirstNameAndLastName(String firstName, String lastName);

@@ -25,8 +25,13 @@ public class LoginController {
 	@Autowired
 	private UserDao userDao;
 
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public ModelAndView authenticate() {
+	@RequestMapping(value="/login", method=RequestMethod.GET)
+	public ModelAndView index() {
+		return new ModelAndView("login");		
+	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public ModelAndView login() {
 		return new ModelAndView("home");		
 	}
 	
@@ -37,16 +42,16 @@ public class LoginController {
 			@RequestParam("lastName") String lastName,
 			@RequestParam("password") String password) {
 		ModelAndView mv = new ModelAndView("redirect:/");
-		User user = userDao.findByFirstNameAndLastNameAndPassword(firstName, lastName, password);
+		User user = new User(); //userDao.findByFirstNameAndLastNameAndPassword(firstName, lastName, password);
 		
 		if (user != null)
 		{
-			user.setSessionKey(httpSession.getId());
+			//user.setSessionKey(httpSession.getId());
 			httpSession.setAttribute("firstName", user.getFirstName());
 			httpSession.setAttribute("lastName", user.getLastName());
 			mv.addObject("user", user);
 			
-			user.setSessionKey(httpSession.getId());
+			//user.setSessionKey(httpSession.getId());
 			userDao.save(user);
 		}
 		else
@@ -64,21 +69,21 @@ public class LoginController {
 			@RequestParam("lastName") String lastName,
 			@RequestParam("password") String password) {
 		ModelAndView mv = new ModelAndView("home");
-		User user = userDao.findByFirstNameAndLastName(firstName, lastName);
+		User user = new User(); //userDao.findByFirstNameAndLastName(firstName, lastName);
 		
 		if (user == null)
 		{
 			user = new User();
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
-			user.setSessionKey(httpSession.getId());
-			user.setIsAdmin(false);
+			//user.setSessionKey(httpSession.getId());
+			//user.setIsAdmin(false);
 			user.setPassword(password);
 			httpSession.setAttribute("firstName", user.getFirstName());
 			httpSession.setAttribute("lastName", user.getLastName());
 			mv.addObject("user", user);
 			
-			user.setSessionKey(httpSession.getId());
+			//user.setSessionKey(httpSession.getId());
 			userDao.save(user);
 		}
 		else
