@@ -3,6 +3,7 @@ package com.example.demo.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -14,24 +15,26 @@ import com.example.demo.models.UserDao;
 import com.example.demo.models.UserStatisticDto;
 
 @Service
-public class UserService {
+public class SongRequestService {
 	
 	private UserDao userDao;
 	private SongRequestDao songRequestDao;
 	
-	public UserService(UserDao userDao,
+	public SongRequestService(UserDao userDao,
 			SongRequestDao songRequestDao)
 	{
 		this.userDao = userDao;
 		this.songRequestDao = songRequestDao;
 	}
 	
-	public List<UserStatisticDto> GetUserStatistics() {
+	public void ReSequenceRequests() {
 		List<UserStatisticDto> userStatisticList = new ArrayList<UserStatisticDto>();
 		Collection<User> users = userDao.findAll();
 		Collection<SongRequest> songRequests = (Collection<SongRequest>) songRequestDao.findAll();
 		long totalPendingRequests = songRequests.stream().filter(a -> !a.isComplete()).count();
 		long totalCompletedRequests = songRequests.stream().filter(a -> a.isComplete()).count();
+		List<SongRequest> requestsToUpdate = new ArrayList<SongRequest>();
+		
 		
 		for (User user : users) {
 			UserStatisticDto userStatisticDto = new UserStatisticDto();
@@ -68,6 +71,46 @@ public class UserService {
 			userStatisticList.add(userStatisticDto);
 		}
 		
-		return userStatisticList;
+		for (SongRequest songRequest : songRequests)
+		{
+			List<SongRequest> otherUserRequests = songRequests.stream().filter(a -> a.getUser() != songRequest.getUser()).collect(Collectors.toList());
+			boolean otherUsersWaiting = false;
+			for (SongRequest otherUserRequest : otherUserRequests)
+			{
+				if (songRequests
+						.stream()
+						.filter(a -> a.getUser().compareTo(otherUserRequest.getUser()) == 0)
+						.count() > 0)
+				{
+					otherUsersWaiting = true;
+					break;
+				}				
+			}
+			
+			
+			if (requestsToUpdate
+					.stream()
+					.filter(a -> a.getUser().compareTo(songRequest.getUser()) == 0)
+					.count() > 1 &&
+				otherUsersWaiting)
+			{
+				songRequests.remove(songRequest);
+				songRequests.add(songRequest);
+			}
+			else
+			{
+				requestsToUpdate.add(songRequest);
+				songRequests.remove(songRequest);
+			}
+		}
+		
+		int i = 0;
+		for(SongRequest requestToUpdate : requestsToUpdate)
+		{
+			requestToUpdate.setSequence(i);
+			songRequestDao.save(requestToUpdate);
+			i++;
+		}
+		
 	}
 }
