@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +38,14 @@ public class WebController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
 		User user = userDao.findByUsername(auth.getName());
 		
-		List<SongRequest> songRequests = songRequestDao.findByUserId(user.getId());
+		List<SongRequest> songRequests = songRequestDao.findByUserId(user.getId());		
+		List<SongRequest> nextRequests = songRequestDao.findTop3ByOrderBySequence();
+		Collections.sort(nextRequests, (a,b) -> a.getSequence() > b.getSequence() ? 0 : 1);
 		
 		mv.addObject("songRequests", songRequests);
+		mv.addObject("nextRequests", nextRequests);
 		
 		return mv;
-	}
-	
-	@RequestMapping(value= {"/admin"})
-	public String admin()
-	{
-		return "admin/index";
-	}
+	}	
 	
 }

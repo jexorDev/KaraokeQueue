@@ -1,13 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <div th:replace="fragments/header :: header-css"/>
+    <script th:src="@{/js/SongRequest/songRequest.js}"></script>
 </head>
 <body>
+
+<div th:replace="fragments/header :: header"/>
+
 <div class="container">
 
-<h1>WELCOME admin</h1>
+<button type="button" class="btn btn-primary">Blend</button>
+<br/>
+
+<div class="panel panel-primary">
+	<div class="panel panel-heading">
+		Current requests
+	</div>
+	<div class="panel panel-body">
+		<div class="well well-sm">
+			<div class="progress">
+			  <div class="progress-bar progress-bar-danger" th:style="'width: ' + ${completePercent} + '%'">
+			    <span class="sr-only">10% Complete (danger)</span>
+			  </div>
+			  <div class="progress-bar progress-bar-success" th:style="'width: ' + ${pendingPercent} + '%'">
+			    <span class="sr-only">35% Complete (success)</span>
+			  </div>  
+			</div>
+			
+		</div>
+	
+		<div th:each="songRequest : ${currentRequests}" class="well well-sm">			
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-1">
+						<h4><span class="label label-default">Seq</span></h4>
+						<h4 th:text="${songRequest.sequence}"></h4>
+					</div>
+					<div class="col-lg-3">
+						<h4><span class="label label-default">User</span></h4>
+						<h4 th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></h4>
+					</div>
+					<div class="col-lg-4">
+						<h4><span class="label label-default">Song</span></h4>
+						<h4 th:text="${songRequest.songName}"></h4>
+					</div>
+					<div class="col-lg-4">
+						<h4><span class="label label-default">Artist</span></h4>
+						<h4 th:text="${songRequest.artistName}"></h4>
+					</div>
+				</div>
+			</div>
+			<br/>			
+			<form th:action="@{/admin/complete/} + ${songRequest.id}" method="POST">			 
+				<button type="submit" class="btn btn-danger">
+					 Complete
+				</button>			
+			</form>
+		</div>
+		<button type="button" class="btn btn-success"><a th:href="@{/request/create}" class="whiteLink">New Song Request</a></button>
+	</div>
+</div>
+
+<div class="panel panel-primary">
+	<div class="panel panel-heading">
+		Users
+	</div>
+	<div class="panel panel-body">
+		<table class="table">
+			<tr>
+				<th>Name</th>
+				<th>Pending</th>
+				<th>Completed</th>
+				<th>Relative Pending</th>
+				<th>Relative Completed</th>
+			</tr>
+			<div th:each="userStatistic : ${userStatistics}">
+			<tr th:class="${userStatistic.getRowColor()}">
+				<td th:text="${userStatistic.user.firstName} + ' ' + ${userStatistic.user.lastName}"></td>
+				<td th:text="${userStatistic.songsPending}"></td>
+				<td th:text="${userStatistic.songsCompleted}"></td>
+				<td>
+					<div class="progress">
+	  					<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" th:style="'width: ' + ${userStatistic.pendingRelative} + '%'">
+	    					<span class="sr-only">80% Complete (danger)</span>
+	  					</div>
+					</div>
+				</td>
+				<td>
+					<div class="progress">
+	  					<div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" th:style="'width: ' + ${userStatistic.completedRelative} + '%'">
+	    					<span class="sr-only">80% Complete (danger)</span>
+	  					</div>
+					</div>
+				</td>
+			</tr>
+			</div>
+		</table>
+	</div>
+</div>
+
 </div>
 
 </body>

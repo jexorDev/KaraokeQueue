@@ -4,6 +4,8 @@
         <!-- this is header-css -->        
         <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
               href="../../css/bootstrap.min.css" />
+        <link rel="stylesheet" th:href="@{/css/style.css}"
+              href="../../css/style.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </div>
 </head>
@@ -13,13 +15,15 @@
     <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" th:href="@{/}">Spring Boot</a>
+                <a class="navbar-brand" th:href="@{/}"></a>
             </div>
+            <!--
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a th:href="@{/}">Home</a></li>
                 </ul>
             </div>
+            -->
         </div>
     </nav>
 </div>

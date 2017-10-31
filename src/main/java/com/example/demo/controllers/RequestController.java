@@ -41,6 +41,7 @@ public class RequestController {
 		User user = userDao.findByUsername(auth.getName());
 		
 		songRequest.setUser(user);
+		songRequest.setSequence(-1);
 		
 		songRequestDao.save(songRequest);
 		

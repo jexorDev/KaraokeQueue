@@ -23,17 +23,11 @@ import java.util.Date;
 @Table(name = "song_request")
 public class SongRequest implements Comparable {
 
-    // ------------------------
-    // PRIVATE FIELDS
-    // ------------------------
-
-    // An auto generated id (unique for each user in the db)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="song_request_id")
     private long id;
 
-    // The user's user name
     @NotNull
     @OneToOne
     @JoinColumn(name="user_id", nullable=false)
@@ -42,9 +36,13 @@ public class SongRequest implements Comparable {
     @NotNull
     private String songName;
 
-    // The indicator if the user is active or disabled
     @NotNull
     private String artistName;
+    
+    @Column(nullable = true)
+    private int sequence;
+    
+    private boolean isComplete;
 
 	public long getId() {
 		return id;
@@ -78,18 +76,27 @@ public class SongRequest implements Comparable {
 		this.artistName = artistName;
 	}
 
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}	
+
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
+
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
+	}  
 
    
-
-
-
-
-   
-
-   
-} // class User
+} 

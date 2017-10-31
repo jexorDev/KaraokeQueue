@@ -22,6 +22,8 @@ import org.springframework.data.repository.CrudRepository;
 @Transactional
 public interface SongRequestDao extends CrudRepository<SongRequest, Long> {
 
-    public List<SongRequest> findByUserId(long userId);
+	public List<SongRequest> findAllByIsComplete(boolean isComplete);
+    public List<SongRequest> findByUserId(long userId);    
+    public List<SongRequest> findTop3ByOrderBySequence();
 
 }
