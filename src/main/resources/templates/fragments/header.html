@@ -10,6 +10,7 @@
     </div>
 </head>
 <body>
+
 <div th:fragment="header">
     <!-- this is header -->
     <nav class="navbar navbar-inverse">
@@ -24,9 +25,15 @@
                 </ul>
             </div>
             -->
+            <div sec:authorize="hasRole('ROLE_ADMIN')" id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a th:href="@{/admin}">Dashboard</a></li>
+                </ul>
+            </div>
         </div>
-    </nav>
+    </nav>    
 </div>
+
 
 </body>
 </html>

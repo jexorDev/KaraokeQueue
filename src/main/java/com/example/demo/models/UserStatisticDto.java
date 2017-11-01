@@ -4,7 +4,9 @@ public class UserStatisticDto {
 
 	private long songsPending;
 	private long songsCompleted;
+	private long songsQueued;
 	private float pendingRelative;
+	private float queuedRelative;
 	private float completedRelative;
 	private User user;
 	private String rowColor;
@@ -13,7 +15,9 @@ public class UserStatisticDto {
 	public String getRowColor() {
 		if (completedRelative >= 50)
 			return "danger";
-		if (pendingRelative == 0 && completedRelative == 0)
+		else if (queuedRelative > 50)
+			return "warning";
+		else if (pendingRelative == 0 && completedRelative == 0)
 			return "";
 		else
 			return "success";
@@ -51,6 +55,19 @@ public class UserStatisticDto {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public long getSongsQueued() {
+		return songsQueued;
+	}
+	public void setSongsQueued(long songsQueued) {
+		this.songsQueued = songsQueued;
+	}
+	public float getQueuedRelative() {
+		return queuedRelative;
+	}
+	public void setQueuedRelative(float queuedRelative) {
+		this.queuedRelative = queuedRelative;
+	}
+	
 	
 	
 	

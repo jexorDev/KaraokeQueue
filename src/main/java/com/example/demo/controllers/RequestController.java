@@ -51,8 +51,9 @@ public class RequestController {
 	
 	@RequestMapping(value="/request/delete/{id}", method=RequestMethod.POST)
 	public ModelAndView delete(@PathVariable("id") String id)
-	{
+	{		
 		SongRequest songRequest = songRequestDao.findOne(Long.parseLong(id));
+		
 		songRequestDao.delete(songRequest);
 		
 		return new ModelAndView("redirect:/home");

@@ -27,8 +27,8 @@
 	</div>
 	<div class="panel panel-body">
 		<div th:each="songRequest : ${songRequests}" class="well well-sm">
-			<div th:if="${songRequest.sequence} == 1">
-				<span class="label label-info">Get ready!  Your are up soon.</span>
+			<div th:if="${songRequest.sequence} == 0">
+				<h4><span class="label label-info">Get Ready! You are up soon.</span></h4>
 			</div>
 			<div class="container">
 				<div class="row">
@@ -49,7 +49,7 @@
 				</button>			
 			</form>
 		</div>
-		<button type="button" class="btn btn-success"><a th:href="@{/request/create}" class="whiteLink">New Song Request</a></button>
+		<a th:href="@{/request/create}" class="btn btn-success">New Song Request</a>
 	</div>	
 </div>
 

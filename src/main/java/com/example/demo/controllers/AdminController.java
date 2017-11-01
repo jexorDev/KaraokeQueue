@@ -40,8 +40,7 @@ public class AdminController {
 		
 		ModelAndView mv = new ModelAndView("admin/index");
 		
-		List<SongRequest> allRequests = songRequestDao.findAllByOrderBySequence();
-				
+		List<SongRequest> allRequests = songRequestDao.findAllByOrderBySequence();				
 		List<SongRequest> pendingRequests = songRequestDao.findAllByIsCompleteOrderBySequence(false);
 				
 		float pendingPercent = 100 * ((float)pendingRequests.spliterator().getExactSizeIfKnown() / allRequests.spliterator().getExactSizeIfKnown());

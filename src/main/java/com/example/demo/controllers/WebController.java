@@ -36,7 +36,8 @@ public class WebController {
 		ModelAndView mv = new ModelAndView("home");
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
-		User user = userDao.findByUsername(auth.getName());
+		User user = userDao.findByUsername(auth.getName());				
+		boolean isAdmin = auth.getAuthorities().stream().filter(a -> a.getAuthority() == "ROLE_ADMIN").count() > 0;
 		
 		List<SongRequest> songRequests = songRequestDao.findByUserId(user.getId());		
 		List<SongRequest> nextRequests = songRequestDao.findTop3BySequenceGreaterThanEqualOrderBySequence(0);
@@ -44,6 +45,7 @@ public class WebController {
 		
 		mv.addObject("songRequests", songRequests);
 		mv.addObject("nextRequests", nextRequests);
+		mv.addObject("isAdmin", isAdmin);
 		
 		return mv;
 	}	
