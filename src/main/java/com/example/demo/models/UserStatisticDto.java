@@ -11,7 +11,7 @@ public class UserStatisticDto {
 	
 	
 	public String getRowColor() {
-		if (pendingRelative > 50 || completedRelative > 50)
+		if (completedRelative >= 50)
 			return "danger";
 		if (pendingRelative == 0 && completedRelative == 0)
 			return "";

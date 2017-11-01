@@ -39,7 +39,7 @@ public class WebController {
 		User user = userDao.findByUsername(auth.getName());
 		
 		List<SongRequest> songRequests = songRequestDao.findByUserId(user.getId());		
-		List<SongRequest> nextRequests = songRequestDao.findTop3ByOrderBySequence();
+		List<SongRequest> nextRequests = songRequestDao.findTop3BySequenceGreaterThanEqualOrderBySequence(0);
 		Collections.sort(nextRequests, (a,b) -> a.getSequence() > b.getSequence() ? 0 : 1);
 		
 		mv.addObject("songRequests", songRequests);

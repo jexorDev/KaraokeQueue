@@ -27,7 +27,7 @@
 	</div>
 	<div class="panel panel-body">
 		<div th:each="songRequest : ${songRequests}" class="well well-sm">
-			<div th:if="${songRequest.sequence} &lt; 2">
+			<div th:if="${songRequest.sequence} == 1">
 				<span class="label label-info">Get ready!  Your are up soon.</span>
 			</div>
 			<div class="container">

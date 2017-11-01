@@ -10,13 +10,13 @@
 
 <div class="container">
 
-<button type="button" class="btn btn-warning"><a th:href="@{/admin/resequence}" class="whiteLink"/></button>
-
 <div class="panel panel-primary">
 	<div class="panel panel-heading">
 		Current requests
 	</div>
 	<div class="panel panel-body">
+	
+	<!-- 
 		<div class="well well-sm">
 			<div class="progress">
 			  <div class="progress-bar progress-bar-danger" th:style="'width: ' + ${completePercent} + '%'">
@@ -29,7 +29,8 @@
 			
 		</div>
 	
-		<div th:each="songRequest : ${currentRequests}" class="well well-sm">			
+		<h4><span class="label label-primary">Queued Requests</span></h4>
+		<div th:each="songRequest : ${currentRequests}" th:unless="${songRequest.sequence} == -1" class="well well-sm">			
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-1">
@@ -57,7 +58,113 @@
 				</button>			
 			</form>
 		</div>
-		<button type="button" class="btn btn-success"><a th:href="@{/request/create}" class="whiteLink">New Song Request</a></button>
+		
+		-->
+		<h4><span class="label label-primary">Queued Requests</span></h4>
+		<div class="well well-sm">
+			<table class="table table-condensed table-striped table-hover">
+				<tr>
+					<th>Seq</th>
+					<th>User</th>
+					<th>Song</th>
+					<th>Artist</th>
+					<th>Options</th>
+				</tr>
+				<tr th:each="songRequest : ${currentRequests}" th:unless="${songRequest.sequence} == -1" class="well well-sm">
+					<td th:text="${songRequest.sequence}"></td>
+					<td th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
+					<td th:text="${songRequest.songName}"></td>
+					<td th:text="${songRequest.artistName}"></td>
+					<td>
+						<form th:action="@{/admin/queue/} + ${songRequest.id}" method="POST" style="display:inline-block">	 
+							<div class="input-group" style="width:125px">
+								<input type="text" class="form-control" placeholder="Seq" name="sequence"></input>
+								<span class="input-group-btn">
+	     								<button class="btn btn-primary" type="submit">Bump</button>	
+	     							</span>      							
+	   						</div>								 		
+						</form>			
+						<form th:action="@{/admin/complete/} + ${songRequest.id}" method="POST" style="display:inline-block">
+							<div class="input-group">
+								<button type="submit" class="btn btn-danger">
+									 Complete
+								</button>
+							</div>									
+						</form>				
+					</td>	
+				</tr>		
+			</table>
+		</div>
+		
+		
+		<h4><span class="label label-primary">Waiting Requests</span></h4>
+		<!-- 
+		<div th:each="songRequest : ${currentRequests}" th:if="${songRequest.sequence} == -1" class="well well-sm">			
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-1">
+						<h4><span class="label label-default">Seq</span></h4>
+						<h4 th:text="${songRequest.sequence}"></h4>
+					</div>
+					<div class="col-lg-3">
+						<h4><span class="label label-default">User</span></h4>
+						<h4 th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></h4>
+					</div>
+					<div class="col-lg-4">
+						<h4><span class="label label-default">Song</span></h4>
+						<h4 th:text="${songRequest.songName}"></h4>
+					</div>
+					<div class="col-lg-4">
+						<h4><span class="label label-default">Artist</span></h4>
+						<h4 th:text="${songRequest.artistName}"></h4>
+					</div>
+				</div>
+			</div>
+			<br/>			
+			<form th:action="@{/admin/complete/} + ${songRequest.id}" method="POST">			 
+				<button type="submit" class="btn btn-success">
+					 Queue
+				</button>			
+			</form>
+		</div>
+
+	-->
+		<div class="well well-sm">
+			<table class="table table-condensed table-striped table-hover">
+				<tr>	
+					<th>Id</th>				
+					<th>User</th>
+					<th>Song</th>
+					<th>Artist</th>
+					<th>Options</th>
+				</tr>
+				<tr th:each="songRequest : ${currentRequests}" th:if="${songRequest.sequence} == -1" class="well well-sm">
+					<td th:text="${songRequest.id}"></td>					
+					<td th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
+					<td th:text="${songRequest.songName}"></td>
+					<td th:text="${songRequest.artistName}"></td>
+					<td>
+						<form th:action="@{/admin/queue/} + ${songRequest.id}" method="POST" style="display:inline-block">	 
+							<div class="input-group" style="width:125px">
+								<input type="text" class="form-control" placeholder="Seq" name="sequence"></input>
+								<span class="input-group-btn">
+	     								<button class="btn btn-success" type="submit">Queue</button>	
+	     							</span>      							
+	   						</div>								 		
+						</form>		
+	
+						<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST" style="display:inline-block">
+							<div class="input-group">
+								<button type="submit" class="btn btn-danger">
+									 Reject
+								</button>
+							</div>									
+						</form>								
+					</td>	
+				</tr>		
+			</table>
+		</div>
+		<a th:href="@{/request/create}" class="btn btn-success">New Song Request</a>
 	</div>
 </div>
 
@@ -66,6 +173,7 @@
 		Users
 	</div>
 	<div class="panel panel-body">
+		<div class="well well-sm">
 		<table class="table">
 			<tr>
 				<th>Name</th>
@@ -96,6 +204,8 @@
 			</tr>
 			</div>
 		</table>
+		</div>
+		
 	</div>
 </div>
 

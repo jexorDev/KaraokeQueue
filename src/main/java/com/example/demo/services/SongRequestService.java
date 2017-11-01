@@ -27,6 +27,41 @@ public class SongRequestService {
 		this.songRequestDao = songRequestDao;
 	}
 	
+	public void QueueRequest(long id, int sequence, boolean completeRequest) 
+	{	
+		Collection<SongRequest> songRequests = null;
+		SongRequest songRequestToQueue = songRequestDao.findOne(id);
+		int upOrDown = 1; //up = -1, down = 1 
+		
+		if (songRequestToQueue.getSequence() < 0 || completeRequest)
+		{
+			upOrDown = completeRequest ? -1 : 1;
+			songRequests = songRequestDao.findBySequenceGreaterThanEqual(completeRequest ? songRequestToQueue.getSequence() : sequence);			
+		}
+		else
+		{
+			int seq1 = songRequestToQueue.getSequence() < sequence ? songRequestToQueue.getSequence() : sequence;
+			int seq2 = songRequestToQueue.getSequence() < sequence ? sequence : songRequestToQueue.getSequence();
+			upOrDown = songRequestToQueue.getSequence() < sequence ? -1 : 1;		
+			
+			songRequests = songRequestDao.findBySequenceBetween(seq1, seq2);	
+		}
+				
+		
+		for(SongRequest sr : songRequests)
+		{
+			sr.setSequence(sr.getSequence() + (1 * upOrDown));
+			songRequestDao.save(sr);
+		}
+		
+		songRequestToQueue.setSequence(sequence);
+		if(completeRequest)
+		{
+			songRequestToQueue.setComplete(true);
+		}
+		songRequestDao.save(songRequestToQueue);
+	}
+	
 	public void ReSequenceRequests() {
 		List<UserStatisticDto> userStatisticList = new ArrayList<UserStatisticDto>();
 		Collection<User> users = userDao.findAll();
@@ -71,46 +106,50 @@ public class SongRequestService {
 			userStatisticList.add(userStatisticDto);
 		}
 		
-		for (SongRequest songRequest : songRequests)
+		while (songRequests.size() != requestsToUpdate.size())
 		{
-			List<SongRequest> otherUserRequests = songRequests.stream().filter(a -> a.getUser() != songRequest.getUser()).collect(Collectors.toList());
-			boolean otherUsersWaiting = false;
-			for (SongRequest otherUserRequest : otherUserRequests)
+			for (SongRequest songRequest : songRequests)
 			{
-				if (songRequests
-						.stream()
-						.filter(a -> a.getUser().compareTo(otherUserRequest.getUser()) == 0)
-						.count() > 0)
+				List<SongRequest> otherUserRequests = songRequests.stream().filter(a -> a.getUser() != songRequest.getUser()).collect(Collectors.toList());
+				boolean otherUsersWaiting = false;
+				for (SongRequest otherUserRequest : otherUserRequests)
 				{
-					otherUsersWaiting = true;
-					break;
-				}				
+					if (songRequests
+							.stream()
+							.filter(a -> a.getUser().compareTo(otherUserRequest.getUser()) == 0)
+							.count() > 0)
+					{
+						otherUsersWaiting = true;
+						break;
+					}				
+				}
+				
+				
+				if (requestsToUpdate
+						.stream()
+						.filter(a -> a.getUser().compareTo(songRequest.getUser()) == 0)
+						.count() > 1 &&
+					otherUsersWaiting)
+				{
+					//songRequests.remove(songRequest);
+					//songRequests.add(songRequest);
+				}
+				else
+				{
+					requestsToUpdate.add(songRequest);
+					//songRequests.remove(songRequest);
+				}
 			}
 			
-			
-			if (requestsToUpdate
-					.stream()
-					.filter(a -> a.getUser().compareTo(songRequest.getUser()) == 0)
-					.count() > 1 &&
-				otherUsersWaiting)
-			{
-				songRequests.remove(songRequest);
-				songRequests.add(songRequest);
-			}
-			else
-			{
-				requestsToUpdate.add(songRequest);
-				songRequests.remove(songRequest);
+			int i = 0;
+			for(SongRequest requestToUpdate : requestsToUpdate)
+			{				
+				requestToUpdate.setSequence(i);			
+				songRequestDao.save(requestToUpdate);
+				i++;			
 			}
 		}
 		
-		int i = 0;
-		for(SongRequest requestToUpdate : requestsToUpdate)
-		{
-			requestToUpdate.setSequence(i);
-			songRequestDao.save(requestToUpdate);
-			i++;
-		}
 		
 	}
 }
