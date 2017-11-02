@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,6 +30,11 @@ public class WebController {
 	{
 		return "redirect:/home";
 	}	
+	
+	@GetMapping("/403")
+    public String error403() {
+        return "/error/403";
+    }
 
 	@RequestMapping(value= {"/home"})
 	public ModelAndView home()
@@ -39,7 +45,7 @@ public class WebController {
 		User user = userDao.findByUsername(auth.getName());				
 		boolean isAdmin = auth.getAuthorities().stream().filter(a -> a.getAuthority() == "ROLE_ADMIN").count() > 0;
 		
-		List<SongRequest> songRequests = songRequestDao.findByUserId(user.getId());		
+		List<SongRequest> songRequests = songRequestDao.findByUserIdAndIsCompleteOrderById(user.getId(), false);		
 		List<SongRequest> nextRequests = songRequestDao.findTop3BySequenceGreaterThanEqualOrderBySequence(0);
 		Collections.sort(nextRequests, (a,b) -> a.getSequence() > b.getSequence() ? 0 : 1);
 		

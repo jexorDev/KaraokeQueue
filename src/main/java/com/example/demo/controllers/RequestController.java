@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +31,11 @@ public class RequestController {
 	@RequestMapping(value="/request/create", method=RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("request/create");
-		mv.addObject("songRequest", new SongRequest());		
+		
+		List<User> users = userDao.findAll();
+		
+		mv.addObject("songRequest", new SongRequest());
+		mv.addObject("users", users);
 		return mv;		
 	}
 	
@@ -37,10 +43,15 @@ public class RequestController {
 	public ModelAndView create(@ModelAttribute SongRequest songRequest) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean isAdmin = auth.getAuthorities().stream().filter(a -> a.getAuthority() == "ROLE_ADMIN").count() > 0;
 		
-		User user = userDao.findByUsername(auth.getName());
+		//admin have ability to choose any user
+		if (songRequest.getUser() == null)
+		{
+			User user = userDao.findByUsername(auth.getName());			
+			songRequest.setUser(user);	
+		}
 		
-		songRequest.setUser(user);
 		songRequest.setSequence(-1);
 		
 		songRequestDao.save(songRequest);

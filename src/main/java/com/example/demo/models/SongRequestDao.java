@@ -24,8 +24,9 @@ public interface SongRequestDao extends CrudRepository<SongRequest, Long> {
 
 	public List<SongRequest> findAllByOrderBySequence();
 	public List<SongRequest> findAllByIsCompleteOrderBySequence(boolean isComplete);
-    public List<SongRequest> findByUserId(long userId);    
+    public List<SongRequest> findByUserIdAndIsCompleteOrderById(long userId, boolean complete);    
     public List<SongRequest> findTop3BySequenceGreaterThanEqualOrderBySequence(int sequence);
+    public SongRequest findTop1ByOrderBySequenceDesc();
     public List<SongRequest> findBySequenceBetween(int seq1, int seq2);
     public List<SongRequest> findBySequenceGreaterThanEqual(int seq);
 

@@ -43,6 +43,10 @@ public class SongRequest implements Comparable {
     private int sequence;
     
     private boolean isComplete;
+    
+    @OneToOne
+    @JoinColumn(name="duet_user", referencedColumnName="user_id")
+    private User duetUser;
 
 	public long getId() {
 		return id;
@@ -90,6 +94,14 @@ public class SongRequest implements Comparable {
 
 	public void setComplete(boolean isComplete) {
 		this.isComplete = isComplete;
+	}
+
+	public User getDuetUser() {
+		return duetUser;
+	}
+
+	public void setDuetUser(User duetUser) {
+		this.duetUser = duetUser;
 	}
 
 	@Override

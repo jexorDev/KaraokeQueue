@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.sound.midi.Sequence;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.SongRequest;
@@ -27,39 +29,53 @@ public class SongRequestService {
 		this.songRequestDao = songRequestDao;
 	}
 	
-	public void QueueRequest(long id, int sequence, boolean completeRequest) 
+	public void QueueRequest(String requestId, String requestSequence, boolean completeRequest) 
 	{	
-		Collection<SongRequest> songRequests = null;
+		long id = Long.parseLong(requestId);
 		SongRequest songRequestToQueue = songRequestDao.findOne(id);
-		int upOrDown = 1; //up = -1, down = 1 
 		
-		if (songRequestToQueue.getSequence() < 0 || completeRequest)
+		if (requestSequence.isEmpty())
 		{
-			upOrDown = completeRequest ? -1 : 1;
-			songRequests = songRequestDao.findBySequenceGreaterThanEqual(completeRequest ? songRequestToQueue.getSequence() : sequence);			
+			SongRequest lastSongRequest = songRequestDao.findTop1ByOrderBySequenceDesc();
+			songRequestToQueue.setSequence(lastSongRequest.getSequence() + 1);
 		}
 		else
 		{
-			int seq1 = songRequestToQueue.getSequence() < sequence ? songRequestToQueue.getSequence() : sequence;
-			int seq2 = songRequestToQueue.getSequence() < sequence ? sequence : songRequestToQueue.getSequence();
-			upOrDown = songRequestToQueue.getSequence() < sequence ? -1 : 1;		
+			int sequence = Integer.parseInt(requestSequence);
+			Collection<SongRequest> songRequests = null;
 			
-			songRequests = songRequestDao.findBySequenceBetween(seq1, seq2);	
-		}
+			int upOrDown = 1; //up = -1, down = 1 
+			
+			if (songRequestToQueue.getSequence() < 0 || completeRequest)
+			{
+				upOrDown = completeRequest ? -1 : 1;
+				songRequests = songRequestDao.findBySequenceGreaterThanEqual(completeRequest ? songRequestToQueue.getSequence() : sequence);			
+			}
+			else
+			{
+				int seq1 = songRequestToQueue.getSequence() < sequence ? songRequestToQueue.getSequence() : sequence;
+				int seq2 = songRequestToQueue.getSequence() < sequence ? sequence : songRequestToQueue.getSequence();
+				upOrDown = songRequestToQueue.getSequence() < sequence ? -1 : 1;		
 				
-		
-		for(SongRequest sr : songRequests)
-		{
-			sr.setSequence(sr.getSequence() + (1 * upOrDown));
-			songRequestDao.save(sr);
+				songRequests = songRequestDao.findBySequenceBetween(seq1, seq2);	
+			}
+					
+			
+			for(SongRequest sr : songRequests)
+			{
+				sr.setSequence(sr.getSequence() + (1 * upOrDown));
+				songRequestDao.save(sr);
+			}
+			
+			songRequestToQueue.setSequence(sequence);
+			if(completeRequest)
+			{
+				songRequestToQueue.setComplete(true);
+			}			
 		}
 		
-		songRequestToQueue.setSequence(sequence);
-		if(completeRequest)
-		{
-			songRequestToQueue.setComplete(true);
-		}
 		songRequestDao.save(songRequestToQueue);
+		
 	}
 	
 	public void ReSequenceRequests() {

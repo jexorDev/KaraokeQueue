@@ -58,36 +58,20 @@ public class AdminController {
 	public ModelAndView complete(@PathVariable("id") String id)
 	{
 		SongRequestService songRequestService = new SongRequestService(userDao, songRequestDao);		
-		long requestId = Long.parseLong(id);
-		
-		songRequestService.QueueRequest(requestId, -1, true);
+				
+		songRequestService.QueueRequest(id, "-1", true);
 		
 		ModelAndView mv = new ModelAndView("redirect:/admin");		
 		return mv;
 	}
 	
 	@RequestMapping(value="/admin/queue/{id}", method=RequestMethod.POST)
-	public ModelAndView complete(@PathVariable("id") String id, @RequestParam("sequence") String sequence)
+	public ModelAndView complete(@PathVariable("id") String id, @RequestParam(value="sequence", required=false) String sequence)
 	{
-		SongRequestService songRequestService = new SongRequestService(userDao, songRequestDao);		
-		int seq = Integer.parseInt(sequence);
-		long requestId = Long.parseLong(id);
+		SongRequestService songRequestService = new SongRequestService(userDao, songRequestDao);				
+				
+		songRequestService.QueueRequest(id, sequence, false);
 		
-		songRequestService.QueueRequest(requestId, seq, false);
-		
-		/*
-		Iterable<SongRequest> songRequestsToBump = songRequestDao.findBySequenceGreaterThanEqual(seq);
-		
-		for(SongRequest songRequest : songRequestsToBump)
-		{
-			songRequest.setSequence(songRequest.getSequence() + 1);
-			songRequestDao.save(songRequest);
-		}
-		
-		SongRequest queueSongRequest = songRequestDao.findOne(Long.parseLong(id));
-		queueSongRequest.setSequence(seq);
-		songRequestDao.save(queueSongRequest);
-		*/
 		
 		ModelAndView mv = new ModelAndView("redirect:/admin");		
 		return mv;

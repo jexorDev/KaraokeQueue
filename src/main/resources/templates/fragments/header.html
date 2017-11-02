@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>	
     <div th:fragment="header-css">
         <!-- this is header-css -->        
@@ -13,25 +14,48 @@
 
 <div th:fragment="header">
     <!-- this is header -->
+    <div class="well well-sm" th:unless="${#httpServletRequest.remoteUser} == null">
+    	
+	    <form th:action="@{/logout}" method="post">
+	      	<label th:inline="text">Hi [[${#httpServletRequest.remoteUser}]]</label>
+	      	<button type="submit" class="btn btn-danger">Log Out</button>
+	    </form>     
+    </div>
+    
+    <div th:if="${#httpServletRequest.remoteUser} == null">
+		<br/>    
+    </div>
+    
+    <!-- 
     <nav class="navbar navbar-inverse">
-        <div class="container">
+        <div class="container-fluid">
+       
+        
             <div class="navbar-header">
+            
                 <a class="navbar-brand" th:href="@{/}"></a>
+              <form th:unless="${#httpServletRequest.remoteUser} == null" class="navbar-form navbar-left" th:action="@{/logout}" method="post">
+                 	<label th:inline="text">Hi [[${#httpServletRequest.remoteUser}]]</label>
+                 	<button type="submit" class="btn btn-danger">Log Out</button>
+                 </form>
+                 
             </div>
-            <!--
+            
+             
+            
             <div id="navbar" class="collapse navbar-collapse">
+          
                 <ul class="nav navbar-nav">
-                    <li class="active"><a th:href="@{/}">Home</a></li>
+                    <li class="active"><a th:href="@{/admin}">Admin</a></li>
                 </ul>
-            </div>
-            -->
-            <div sec:authorize="hasRole('ROLE_ADMIN')" id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a th:href="@{/admin}">Dashboard</a></li>
-                </ul>
-            </div>
+          
+               
+            </div>                     
+
         </div>
     </nav>    
+    
+     -->
 </div>
 
 

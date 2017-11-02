@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:replace="fragments/header :: header-css"/>    
 </head>
@@ -10,7 +11,7 @@
 <div class="container">
 
 
-<div class="panel panel-primary">
+<div class="panel panel-info">
  	<div class="panel panel-heading">
  		Create Song Request
  	</div>
@@ -23,6 +24,20 @@
 			  <div class="form-group">
 			    <label>Artist:</label>
 			    <input type="text" th:field="*{artistName}" class="form-control"/>				    
+			  </div>
+			  <div class="form-group" sec:authorize="hasRole('ROLE_ADMIN')">
+			    <label>User:</label>
+			    <select class="form-control" th:field="*{user}">
+			    	<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName} + ' ' + ${user.lastName}"></option>
+			    </select>				    
+			  </div>
+			  <div class="form-group">
+			    <label>Duet:</label>
+			    <select class="form-control" th:field="*{duetUser}">
+			    	<option value="-1">Select a user to duet with!</option>
+			    	<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName} + ' ' + ${user.lastName}"></option>			    	
+			    </select>				    
+			    <p class="help-block">This field is optional</p>
 			  </div>
 			  <a th:href="@{/home}" class="btn btn-danger">Cancel</a>
 		      <button type="submit" class="btn btn-success">Submit</button>

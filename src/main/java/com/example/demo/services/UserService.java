@@ -30,7 +30,7 @@ public class UserService {
 		List<UserStatisticDto> userStatisticList = new ArrayList<UserStatisticDto>();
 		Collection<User> users = userDao.findAll();
 		Collection<SongRequest> songRequests = (Collection<SongRequest>) songRequestDao.findAll();
-		long totalPendingRequests = songRequests.stream().filter(a -> !a.isComplete()).count();
+		long totalPendingRequests = songRequests.stream().filter(a -> !a.isComplete() && a.getSequence() < 0).count();
 		long totalCompletedRequests = songRequests.stream().filter(a -> a.isComplete()).count();
 		long totalQueuedRequests = songRequests.stream().filter(a -> a.getSequence() > -1).count();
 		
@@ -45,7 +45,7 @@ public class UserService {
 			userStatisticDto.setSongsPending(
 					userRequests
 					.stream()
-					.filter(a -> !a.isComplete())
+					.filter(a -> !a.isComplete() && a.getSequence() < 0)
 					.count());
 			
 			userStatisticDto.setSongsCompleted(
@@ -63,7 +63,7 @@ public class UserService {
 			userStatisticDto.setPendingRelative(
 					((float)userRequests
 						.stream()
-						.filter(a -> !a.isComplete())
+						.filter(a -> !a.isComplete()  && a.getSequence() < 0)
 						.count() / (totalPendingRequests == 0 ? 1 : totalPendingRequests)) * 100);
 			
 			userStatisticDto.setCompletedRelative(

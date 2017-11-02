@@ -11,17 +11,16 @@
 
 <div th:if="${param.error}">
 	<div class="alert alert-danger">
-		<div class="label label-danger">
-			ERROR
-		</div>	
-	 	Username or Password is incorrect.
+		<h5><span class="label label-danger">LOGIN FAILED</span> Please try again.</h5>
 	</div>	
 </div>
 <div th:if="${param.logout}">
-    <h1 style="color:blue">Logged out.</h1>
+	<div class="alert alert-info">
+		<h5><span class="label label-primary">LOGOUT SUCCESSFUL</span> You are logged out.</h5>
+	</div>
 </div>
  
- <div class="panel panel-primary">
+ <div class="panel panel-default">
  	<div class="panel panel-heading">
  		Log in
  	</div>
@@ -40,7 +39,7 @@
 	</div>
 </div>
 
-<a th:href="@{/user/create}">Create new account</a>
+<a th:href="@{/user/create}" class="btn btn-default">Create new account</a>
 
 </div>
 </body>
