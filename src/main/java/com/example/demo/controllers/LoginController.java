@@ -35,62 +35,7 @@ public class LoginController {
 		return new ModelAndView("home");		
 	}
 	
-	@RequestMapping(value="/login/authenticate", method=RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView authenticate(
-			@RequestParam("firstName") String firstName,
-			@RequestParam("lastName") String lastName,
-			@RequestParam("password") String password) {
-		ModelAndView mv = new ModelAndView("redirect:/");
-		User user = new User(); //userDao.findByFirstNameAndLastNameAndPassword(firstName, lastName, password);
-		
-		if (user != null)
-		{
-			//user.setSessionKey(httpSession.getId());
-			httpSession.setAttribute("firstName", user.getFirstName());
-			httpSession.setAttribute("lastName", user.getLastName());
-			mv.addObject("user", user);
-			
-			//user.setSessionKey(httpSession.getId());
-			userDao.save(user);
-		}
-		else
-		{
-			mv.addObject("loginError", "Login Failed.  Verify your name and password are correct.");
-		}
-		
-		return mv;		
-	}
+
 	
-	@RequestMapping(value="/login/createUser", method=RequestMethod.POST)
-	@ResponseBody
-	public ModelAndView createUser(
-			@RequestParam("firstName") String firstName,
-			@RequestParam("lastName") String lastName,
-			@RequestParam("password") String password) {
-		ModelAndView mv = new ModelAndView("home");
-		User user = new User(); //userDao.findByFirstNameAndLastName(firstName, lastName);
-		
-		if (user == null)
-		{
-			user = new User();
-			user.setFirstName(firstName);
-			user.setLastName(lastName);
-			//user.setSessionKey(httpSession.getId());
-			//user.setIsAdmin(false);
-			user.setPassword(password);
-			httpSession.setAttribute("firstName", user.getFirstName());
-			httpSession.setAttribute("lastName", user.getLastName());
-			mv.addObject("user", user);
-			
-			//user.setSessionKey(httpSession.getId());
-			userDao.save(user);
-		}
-		else
-		{
-			mv.addObject("loginError", "Account already exists.");
-		}
-		
-		return mv;		
-	}
+	
 }

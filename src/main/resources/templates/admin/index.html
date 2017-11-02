@@ -31,7 +31,7 @@
 					<td th:text="${songRequest.sequence}"></td>
 					<td th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
 					<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
-					<td th:if="${songRequest.duetUser} == null"><span class="label label-danger">No</span></td>
+					<td th:if="${songRequest.duetUser} == null"><span class="label label-default">No</span></td>
 					<td th:text="${songRequest.songName}"></td>
 					<td th:text="${songRequest.artistName}"></td>
 					<td>
