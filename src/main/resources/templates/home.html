@@ -14,6 +14,7 @@
 	<div class="panel panel-heading">
 		Next in line
 	</div>
+	<!-- 
 	<div class="panel panel-body">
 		<div th:each="nextRequest : ${nextRequests}" class="well well-sm">			
 			<h4 th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName}"></h4>			
@@ -23,6 +24,14 @@
 					</div>
 		</div>
 	</div>
+	 -->
+	 <table class="table">
+	 	<tr th:each="nextRequest, iter : ${nextRequests}">
+	 		<td><div class="label label-primary" th:text="${iter.index} + 1"></div></td>
+	 		<td th:unless="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName} + ' and ' + ${nextRequest.duetUser.firstName} + ' ' + ${nextRequest.duetUser.lastName}"></td>
+	 		<td th:if="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName}"></td>
+	 	</tr>
+	 </table>
 </div>
 
 <div class="panel panel-info">
@@ -37,16 +46,16 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-4">
-						<h4><span class="label label-default">Song</span></h4>
+						<h4><span class="label label-primary">Song</span></h4>
 						<h4 th:text="${songRequest.songName}"></h4>
 					</div>
 					<div class="col-sm-4">
-						<h4><span class="label label-default">Artist</span></h4>
+						<h4><span class="label label-primary">Artist</span></h4>
 						<h4 th:text="${songRequest.artistName}"></h4>
 					</div>
 					<div class="col-sm-4" th:unless="${songRequest.duetUser} == null">
-						<h4><span class="label label-default">Joined by</span></h4>
-						<h4 th:text="${songRequest.duetUser.firstName}"></h4>
+						<h4><span class="label label-primary">Joining you</span></h4>
+						<h4 th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></h4>
 					</div>
 				</div>
 			</div>

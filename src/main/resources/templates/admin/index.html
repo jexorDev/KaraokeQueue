@@ -21,17 +21,15 @@
 			<table class="table table-condensed table-striped table-hover">
 				<tr>
 					<th>Seq</th>
-					<th>User</th>
-					<th>Duet</th>
+					<th>User</th>					
 					<th>Song</th>
 					<th>Artist</th>
 					<th>Options</th>
 				</tr>
 				<tr th:each="songRequest : ${currentRequests}" th:unless="${songRequest.sequence} == -1" class="well well-sm">
 					<td th:text="${songRequest.sequence}"></td>
-					<td th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
-					<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
-					<td th:if="${songRequest.duetUser} == null"><span class="label label-default">No</span></td>
+					<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName} + ' and ' + ${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
+					<td th:if="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>										
 					<td th:text="${songRequest.songName}"></td>
 					<td th:text="${songRequest.artistName}"></td>
 					<td>
@@ -67,17 +65,15 @@
 			<table class="table table-condensed table-striped table-hover">
 				<tr>	
 					<th>Id</th>				
-					<th>User</th>
-					<th>Duet</th>					
+					<th>User</th>					
 					<th>Song</th>
 					<th>Artist</th>
 					<th>Options</th>
 				</tr>
 				<tr th:each="songRequest : ${currentRequests}" th:if="${songRequest.sequence} == -1" class="well well-sm">
 					<td th:text="${songRequest.id}"></td>					
-					<td th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
-					<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
-					<td th:if="${songRequest.duetUser} == null"><span class="label label-danger">No</span></td>
+					<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName} + ' and ' + ${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
+					<td th:if="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
 					<td th:text="${songRequest.songName}"></td>
 					<td th:text="${songRequest.artistName}"></td>
 					<td>

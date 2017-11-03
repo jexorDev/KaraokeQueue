@@ -8,23 +8,23 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-
-<div th:if="${param.error}">
-	<div class="alert alert-danger">
-		<h5><span class="label label-danger">LOGIN FAILED</span> Please try again.</h5>
-	</div>	
-</div>
-<div th:if="${param.logout}">
-	<div class="alert alert-info">
-		<h5><span class="label label-primary">LOGOUT SUCCESSFUL</span> You are logged out.</h5>
-	</div>
-</div>
- 
- <div class="panel panel-default">
+ <div class="panel panel-info">
  	<div class="panel panel-heading">
  		Log in
  	</div>
  	<div class="panel panel-body"> 	
+	 	<div th:if="${param.error}">
+			<div class="alert alert-danger">
+				<h5><span class="label label-danger">LOGIN FAILED</span></h5>
+				<h5>Verify that your credentials are correct.</h5>
+			</div>	
+		</div>
+		<div th:if="${param.logout}">
+			<div class="alert alert-info">
+				<h5><span class="label label-primary">LOGOUT SUCCESSFUL</span></h5>
+				<h5>You have been logged out.</h5>
+			</div>
+		</div>
 		 <form th:action="@{/login}" method="post">
 			 <div class="form-group">
 			    <label>User Name:</label>

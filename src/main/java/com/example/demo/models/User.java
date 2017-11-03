@@ -63,7 +63,6 @@ public class User implements Comparable {
 		this.lastName = lastName;
 	}
 
-	@NotNull
 	private Boolean enabled;
 
 	@NotNull
