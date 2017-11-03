@@ -17,7 +17,7 @@ public class UserStatisticDto {
 			return "danger";
 		else if (queuedRelative > 50)
 			return "warning";
-		else if (pendingRelative == 0 && completedRelative == 0)
+		else if (pendingRelative == 0 && completedRelative == 0 && queuedRelative == 0)
 			return "";
 		else
 			return "success";
