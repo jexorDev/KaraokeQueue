@@ -20,7 +20,7 @@ import org.springframework.data.repository.CrudRepository;
 @Transactional
 public interface UserDao extends CrudRepository<User, Long> {
 
-    public List<User> findAll();
+    public List<User> findAllByOrderByFirstName();
     public User findByUsername(String username);
 
 } 

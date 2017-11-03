@@ -32,7 +32,7 @@ public class RequestController {
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("request/create");
 		
-		List<User> users = userDao.findAll();
+		List<User> users = userDao.findAllByOrderByFirstName();
 		
 		mv.addObject("songRequest", new SongRequest());
 		mv.addObject("users", users);

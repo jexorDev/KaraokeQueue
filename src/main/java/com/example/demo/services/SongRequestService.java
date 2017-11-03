@@ -80,7 +80,7 @@ public class SongRequestService {
 	
 	public void ReSequenceRequests() {
 		List<UserStatisticDto> userStatisticList = new ArrayList<UserStatisticDto>();
-		Collection<User> users = userDao.findAll();
+		Collection<User> users = userDao.findAllByOrderByFirstName();
 		Collection<SongRequest> songRequests = (Collection<SongRequest>) songRequestDao.findAll();
 		long totalPendingRequests = songRequests.stream().filter(a -> !a.isComplete()).count();
 		long totalCompletedRequests = songRequests.stream().filter(a -> a.isComplete()).count();

@@ -41,12 +41,12 @@ public class AdminController {
 		ModelAndView mv = new ModelAndView("admin/index");
 		
 		List<SongRequest> allRequests = songRequestDao.findAllByOrderBySequence();				
-		List<SongRequest> pendingRequests = songRequestDao.findAllByIsCompleteOrderBySequence(false);
+		List<SongRequest> pendingRequests = songRequestDao.findAllByIsCompleteOrderBySequenceAscIdAsc(false);
 				
 		float pendingPercent = 100 * ((float)pendingRequests.spliterator().getExactSizeIfKnown() / allRequests.spliterator().getExactSizeIfKnown());
 		float completePercent = 100 - pendingPercent;
 		
-		mv.addObject("users", userDao.findAll());
+		mv.addObject("users", userDao.findAllByOrderByFirstName());
 		mv.addObject("currentRequests", pendingRequests);
 		mv.addObject("pendingPercent", pendingPercent);
 		mv.addObject("completePercent", completePercent);

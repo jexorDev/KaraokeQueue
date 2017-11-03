@@ -23,7 +23,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface SongRequestDao extends CrudRepository<SongRequest, Long> {
 
 	public List<SongRequest> findAllByOrderBySequence();
-	public List<SongRequest> findAllByIsCompleteOrderBySequence(boolean isComplete);
+	public List<SongRequest> findAllByIsCompleteOrderBySequenceAscIdAsc(boolean isComplete);
     public List<SongRequest> findByUserIdAndIsCompleteOrderById(long userId, boolean complete);    
     public List<SongRequest> findTop3BySequenceGreaterThanEqualOrderBySequence(int sequence);
     public SongRequest findTop1ByOrderBySequenceDesc();
