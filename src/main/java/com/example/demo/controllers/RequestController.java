@@ -18,6 +18,8 @@ import com.example.demo.models.SongRequest;
 import com.example.demo.models.SongRequestDao;
 import com.example.demo.models.User;
 import com.example.demo.models.UserDao;
+import com.example.demo.models.UserRole;
+import com.example.demo.models.UserRoleDao;
 
 @RestController
 public class RequestController {
@@ -27,6 +29,9 @@ public class RequestController {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private UserRoleDao userRoleDao;
 		
 	@RequestMapping(value="/request/create", method=RequestMethod.GET)
 	public ModelAndView index() {
@@ -40,10 +45,10 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value="/request/create", method=RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute SongRequest songRequest) {
-		
+	public ModelAndView create(@ModelAttribute SongRequest songRequest) 
+	{		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		boolean isAdmin = auth.getAuthorities().stream().filter(a -> a.getAuthority() == "ROLE_ADMIN").count() > 0;
+		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
 		
 		//admin have ability to choose any user
 		if (songRequest.getUser() == null)
@@ -56,7 +61,7 @@ public class RequestController {
 		
 		songRequestDao.save(songRequest);
 		
-		ModelAndView mv = new ModelAndView("redirect:/home");				
+		ModelAndView mv = new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");				
 		return mv;		
 	}
 	
@@ -64,9 +69,11 @@ public class RequestController {
 	public ModelAndView delete(@PathVariable("id") String id)
 	{		
 		SongRequest songRequest = songRequestDao.findOne(Long.parseLong(id));
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
 		
 		songRequestDao.delete(songRequest);
 		
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");
 	}
 }

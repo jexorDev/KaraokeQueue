@@ -18,7 +18,6 @@ import org.springframework.data.repository.CrudRepository;
 @Transactional
 public interface UserRoleDao extends CrudRepository<UserRole, Long> {
 
-    //public User findByFirstNameAndLastNameAndPassword(String firstName, String lastName, String password);
-    //public User findByFirstNameAndLastName(String firstName, String lastName);
+    public UserRole findByUsernameAndRole(String userName, String role);
 
-} // class UserDao
+} 

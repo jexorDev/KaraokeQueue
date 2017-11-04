@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +38,8 @@ public class UserController {
 	public ModelAndView create(@Valid User user, BindingResult bindingResult)
 	{		
 		User existingUser = userDao.findByUsername(user.getUsername());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
 		
         if (bindingResult.hasErrors() ||
             existingUser != null) 
@@ -61,6 +65,6 @@ public class UserController {
 		userRole.setUsername(user.getUsername());
 		userRole.setRole("ROLE_USER");
 		userRoleDao.save(userRole);
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");
 	}
 }
