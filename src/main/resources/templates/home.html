@@ -40,23 +40,42 @@
 	</div>
 	<div class="panel panel-body">
 		<div th:each="songRequest : ${songRequests}" class="well well-sm">
-			<div th:if="${songRequest.sequence} == 0" class="alert alert-info">
+			<div th:if="${songRequest.sequence} == 0" class="alert alert-warning">
 				<strong>Get Ready!</strong> You are up soon.
 			</div>
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-4">
-						<h4><span class="label label-primary">Song</span></h4>
-						<h4 th:text="${songRequest.songName}"></h4>
+					<div class="col-sm-4">						
+						<h4>
+							<span class="label label-primary">Song</span>
+							<span th:text="${songRequest.songName}"></span>	
+						</h4>						
 					</div>
-					<div class="col-sm-4">
-						<h4><span class="label label-primary">Artist</span></h4>
-						<h4 th:text="${songRequest.artistName}"></h4>
-					</div>
+					<div class="col-sm-4">						
+						<h4>
+							<span class="label label-primary">Artist</span>
+							<span th:text="${songRequest.artistName}"></span>	
+						</h4>						
+					</div>					
 					<div class="col-sm-4" th:unless="${songRequest.duetUser} == null">
-						<h4><span class="label label-primary">Joining you</span></h4>
-						<h4 th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></h4>
+						<h4>
+							<span class="label label-primary">Duet with</span>
+							<span th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></span>	
+						</h4>						
 					</div>
+					<!-- 
+					<div class="col-sm-4">
+						<h4 th:if="${songRequest.sequence} &lt; 0">
+							<span class="label label-success">PENDING</span>
+							<span> Your request is waiting to be queued.</span>	
+						</h4>	
+						<h4 th:unless="${songRequest.sequence} &lt; 0">
+							<span class="label label-warning">QUEUED</span>
+							<span> You are </span>
+							<span class="label label-primary" th:text="'#' + ${songRequest.sequence} + 1"> in line</span>
+						</h4>						
+					</div>
+					 -->
 				</div>
 			</div>
 			<br/>			
