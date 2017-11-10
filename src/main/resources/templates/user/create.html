@@ -25,8 +25,8 @@
 			    <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>		    
 			  </div>
 			  <div class="form-group">
-			    <label>Last Name:</label>
-			    <input type="text" th:field="*{lastName}" class="form-control"/>				    
+			    <label>Last Initial:</label>
+			    <input type="text" maxlength="1" th:field="*{lastName}" class="form-control"/>				    
 			  </div>
 			  <div class="form-group">
 			    <label>User Name:</label>
@@ -36,7 +36,7 @@
 			  <div class="form-group">
 			    <label>Password:</label>
 			    <input type="password" th:field="*{password}" class="form-control"/>
-			    <small class="form-text text-muted">Minimum one character.</small>				    
+			    <small class="form-text text-muted">Minimum one character. IMPORTANT: Hash and salt has not yet been implemented.  Make up a throw-away password.</small>				    
 			  </div>
 		      <button type="submit" class="btn btn-primary">Submit</button>		        
 		</form>
