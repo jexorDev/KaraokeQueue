@@ -7,11 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.models.SongRequestDao;
 import com.example.demo.models.User;
 import com.example.demo.models.UserDao;
 import com.example.demo.models.UserRole;
@@ -25,6 +27,9 @@ public class UserController {
 	
 	@Autowired
 	private UserRoleDao userRoleDao;
+	
+	@Autowired
+	private SongRequestDao songRequestDao;
 	
 	@RequestMapping(value="/user/create", method=RequestMethod.GET)
 	public ModelAndView index()
@@ -67,4 +72,6 @@ public class UserController {
 		userRoleDao.save(userRole);
 		return new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");
 	}
+	
+	
 }

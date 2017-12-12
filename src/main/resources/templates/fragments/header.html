@@ -16,6 +16,7 @@
     <div class="alert alert-info" th:unless="${#httpServletRequest.remoteUser} == null">
     	<a th:href="@{/}" class="btn btn-primary" style="display:inline-block">Home</a>
     	<a th:href="@{/admin}" class="btn btn-primary" style="display:inline-block" sec:authorize="hasRole('ROLE_ADMIN')">Dashboard</a>
+    	<a th:href="@{/vote/results}" class="btn btn-primary" style="display:inline-block" sec:authorize="hasRole('ROLE_ADMIN')">Vote Results</a>
 	    <form th:action="@{/logout}" method="post" style="display:inline-block" class="pull-right">
 	      	<label th:inline="text">Hi [[${#httpServletRequest.remoteUser}]]</label>
 	      	<button type="submit" class="btn btn-danger">Log Out</button>

@@ -21,6 +21,8 @@ import org.springframework.data.repository.CrudRepository;
 public interface UserDao extends CrudRepository<User, Long> {
 
     public List<User> findAllByOrderByFirstName();
+    public List<User> findAll();
+    public List<User> findAllByVoteNotNull();
     public User findByUsername(String username);
 
 } 

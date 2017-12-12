@@ -47,6 +47,10 @@ public class User implements Comparable {
 	@NotNull
 	private String lastName;
 	
+    @OneToOne
+    @JoinColumn(name="voted_song", referencedColumnName="song_request_id")
+    private SongRequest vote;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -98,6 +102,14 @@ public class User implements Comparable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}	
+
+	public SongRequest getVote() {
+		return vote;
+	}
+
+	public void setVote(SongRequest vote) {
+		this.vote = vote;
 	}
 
 	@Override
