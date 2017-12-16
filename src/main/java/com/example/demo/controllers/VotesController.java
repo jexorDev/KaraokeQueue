@@ -37,7 +37,7 @@ public class VotesController {
 	@Autowired
 	private SongRequestDao songRequestDao;
 
-	@RequestMapping(value="/votes", method=RequestMethod.GET)
+	@RequestMapping(value="/vote", method=RequestMethod.GET)
 	public ModelAndView index()
 	{
 		ModelAndView mv = new ModelAndView("votes/index");
@@ -53,7 +53,7 @@ public class VotesController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/votes/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
 	public ModelAndView process(@PathVariable("id") String id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userDao.findByUsername(auth.getName());
@@ -65,10 +65,10 @@ public class VotesController {
 		return new ModelAndView("redirect:/home");
 	}
 	
-	@RequestMapping(value="/votes/results", method=RequestMethod.GET)
+	@RequestMapping(value="/vote/results", method=RequestMethod.GET)
 	public ModelAndView results()
 	{
-		ModelAndView mv = new ModelAndView("/admin/results");
+		ModelAndView mv = new ModelAndView("vote/results");
 		List<User> users = userDao.findAll();
 		List<User> usersWhoVoted = userDao.findAllByVoteNotNull();
 		
