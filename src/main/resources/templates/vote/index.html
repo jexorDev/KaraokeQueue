@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>    
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+
+<div class="panel panel-info">
+ 	<div class="panel panel-heading">
+ 		Vote for best performance of the evening<br/>
+ 		<small class="form-text text-muted">Note that voting is broken out at the song level for your reference to each performance. Final calculation will sum votes by contestant.</small>
+ 	</div>
+ 	<table class="table table-condensed table-striped table-hover">
+		<tr>
+			<th>Contestant</th>
+			<th>Song</th>
+			<th>Vote</th>					
+		</tr>
+		<tr th:each="songToVoteOn : ${songsToVoteOn}" class="well well-sm">
+			<td th:text="${songToVoteOn.user.firstName} + ' ' + ${songToVoteOn.user.lastName}"></td>
+			<td th:text="${songToVoteOn.songName}"></td>			
+			<td>
+				<th:block th:if="${user.vote?.id} == ${songToVoteOn.id}">
+					<label class="label label-success">Vote Saved</label>
+				</th:block>
+				<th:block th:unless="${user.vote?.id} == ${songToVoteOn.id}">
+					<form th:action="@{/vote/} + ${songToVoteOn.id}" method="POST" style="display:inline-block">	 
+						<button class="btn btn-danger" type="submit">Vote</button>								 		
+					</form>	
+				</th:block>
+																
+			</td>	
+		</tr>	
+	</table>
+</div>
+     
+ 
+</div>
+
+
+
+</body>
+</html>
