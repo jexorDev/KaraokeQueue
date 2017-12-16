@@ -40,7 +40,7 @@ public class VotesController {
 	@RequestMapping(value="/votes", method=RequestMethod.GET)
 	public ModelAndView index()
 	{
-		ModelAndView mv = new ModelAndView("/votes/index");
+		ModelAndView mv = new ModelAndView("votes/index");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userDao.findByUsername(auth.getName());
 		List<SongRequest> songsToVoteOn = songRequestDao.findAllByIsCompleteOrderBySequenceAscIdAsc(true)
