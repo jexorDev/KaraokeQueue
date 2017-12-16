@@ -29,7 +29,7 @@ import com.example.demo.models.UserRoleDao;
 import com.example.demo.models.VoteResultDto;
 
 @RestController
-public class VoteController {
+public class VotesController {
 
 	@Autowired
 	private UserDao userDao;
@@ -37,10 +37,10 @@ public class VoteController {
 	@Autowired
 	private SongRequestDao songRequestDao;
 
-	@RequestMapping(value="/vote", method=RequestMethod.GET)
+	@RequestMapping(value="/votes", method=RequestMethod.GET)
 	public ModelAndView index()
 	{
-		ModelAndView mv = new ModelAndView("/vote/index");
+		ModelAndView mv = new ModelAndView("/votes/index");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userDao.findByUsername(auth.getName());
 		List<SongRequest> songsToVoteOn = songRequestDao.findAllByIsCompleteOrderBySequenceAscIdAsc(true)
@@ -53,7 +53,7 @@ public class VoteController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/votes/{id}", method = RequestMethod.POST)
 	public ModelAndView process(@PathVariable("id") String id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userDao.findByUsername(auth.getName());
@@ -65,10 +65,10 @@ public class VoteController {
 		return new ModelAndView("redirect:/home");
 	}
 	
-	@RequestMapping(value="/vote/results", method=RequestMethod.GET)
+	@RequestMapping(value="/votes/results", method=RequestMethod.GET)
 	public ModelAndView results()
 	{
-		ModelAndView mv = new ModelAndView("/vote/results");
+		ModelAndView mv = new ModelAndView("/votes/results");
 		List<User> users = userDao.findAll();
 		List<User> usersWhoVoted = userDao.findAllByVoteNotNull();
 		
