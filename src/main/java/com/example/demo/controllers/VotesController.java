@@ -68,7 +68,7 @@ public class VotesController {
 	@RequestMapping(value="/vote/results", method=RequestMethod.GET)
 	public ModelAndView results()
 	{
-		ModelAndView mv = new ModelAndView("vote/results");
+		ModelAndView mv = new ModelAndView("votes/results");
 		List<User> users = userDao.findAll();
 		List<User> usersWhoVoted = userDao.findAllByVoteNotNull();
 		
