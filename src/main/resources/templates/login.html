@@ -8,11 +8,11 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
- <div class="panel panel-info">
- 	<div class="panel panel-heading">
+ <div class="card">
+ 	<div class="card-header">
  		Log in
  	</div>
- 	<div class="panel panel-body"> 	
+ 	<div class="card-body"> 	
 	 	<div th:if="${param.error}">
 			<div class="alert alert-danger">
 				<h5><span class="label label-danger">LOGIN FAILED</span></h5>
@@ -34,12 +34,15 @@
 			    <label>Password:</label>
 			    <input type="password" name="password" class="form-control"></input>	    
 			  </div>
-		      <button type="submit" class="btn btn-primary">Submit</button>
+			  
+			  <button type="submit" class="btn btn-primary">Submit</button>
+			  <a th:href="@{/user/create}">Create new account</a>		  
+			  
 		</form>
 	</div>
 </div>
 
-<a th:href="@{/user/create}" class="btn btn-default">Create new account</a>
+
 
 </div>
 </body>

@@ -7,21 +7,46 @@
               href="../../css/bootstrap.min.css" />
         <link rel="stylesheet" th:href="@{/css/style.css}"
               href="../../css/style.css" />
+              <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </div>
 </head>
 <body>
 
 <div th:fragment="header">
-    <div class="alert alert-info" th:unless="${#httpServletRequest.remoteUser} == null">
-    	<a th:href="@{/}" class="btn btn-primary" style="display:inline-block">Home</a>
-    	<a th:href="@{/admin}" class="btn btn-primary" style="display:inline-block" sec:authorize="hasRole('ROLE_ADMIN')">Dashboard</a>
-    	<a th:href="@{/vote/results}" class="btn btn-primary" style="display:inline-block" sec:authorize="hasRole('ROLE_ADMIN')">Vote Results</a>
-	    <form th:action="@{/logout}" method="post" style="display:inline-block" class="pull-right">
-	      	<label th:inline="text">Hi [[${#httpServletRequest.remoteUser}]]</label>
-	      	<button type="submit" class="btn btn-danger">Log Out</button>
-	    </form>     
-    </div>
+	<div th:unless="${#httpServletRequest.remoteUser} == null" class="pos-f-t">
+	  <div class="collapse" id="navbarToggleExternalContent">
+	    <div class="bg-dark p-4">
+	      	<ul class="list-group">
+			  	<li class="list-group-item list-group-item-action list-group-item-light">
+					<a th:href="@{/}" class="text-dark" style="display:inline-block">Song Requests</a>
+				</li>
+			  	<li class="list-group-item list-group-item-action list-group-item-light">
+					<a th:href="@{/request/create}" class="text-dark" style="display:inline-block">New Song Request</a>
+				</li>
+			  	<li class="list-group-item list-group-item-action list-group-item-light">
+					<a th:href="@{/}" class="text-dark" style="display:inline-block">Cast Vote</a>
+				</li>	
+				<li class="list-group-item list-group-item-action list-group-item-light">
+				  	<form th:action="@{/logout}" method="post">
+		      			<button class="btn btn-link text-danger" type="submit" >Log Out</button>
+		    		</form>    			  
+			  	</li>			   
+			</ul>
+		 
+	    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <h5 th:inline="text" class="text-white h4">Hi [[${#httpServletRequest.remoteUser}]]</h5>
+  </nav>
+</div>
+	
+  	
     
     <div th:if="${#httpServletRequest.remoteUser} == null">
 		<br/>    

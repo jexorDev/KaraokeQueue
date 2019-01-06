@@ -9,88 +9,55 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-
-<div class="panel panel-info">
-	<div class="panel panel-heading">
-		Next in line
-	</div>
-	<!-- 
-	<div class="panel panel-body">
-		<div th:each="nextRequest : ${nextRequests}" class="well well-sm">			
-			<h4 th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName}"></h4>			
-			<div th:unless="${nextRequest.duetUser} == null">
-						<h4><span class="label label-primary">Joined by</span></h4>
-						<h4 th:text="${nextRequest.duetUser.firstName}"></h4>
-					</div>
-		</div>
-	</div>
-	 -->
-	 <table class="table">
-	 	<tr th:each="nextRequest, iter : ${nextRequests}">
-	 		<td><div class="label label-primary" th:text="${iter.index} + 1"></div></td>
-	 		<td th:unless="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName} + ' and ' + ${nextRequest.duetUser.firstName} + ' ' + ${nextRequest.duetUser.lastName}"></td>
-	 		<td th:if="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName}"></td>
-	 	</tr>
-	 </table>
-</div>
-
-<div class="panel panel-info">
-	<div class="panel panel-heading">
-		Your requests
-	</div>
-	<div class="panel panel-body">
-		<div th:each="songRequest : ${songRequests}" class="well well-sm">
-			<div th:if="${songRequest.sequence} == 0" class="alert alert-warning">
-				<strong>Get Ready!</strong> You are up soon.
-			</div>
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-4">						
-						<h4>
-							<span class="label label-primary">Song</span>
-							<span th:text="${songRequest.songName}"></span>	
-						</h4>						
-					</div>
-					<div class="col-sm-4">						
-						<h4>
-							<span class="label label-primary">Artist</span>
-							<span th:text="${songRequest.artistName}"></span>	
-						</h4>						
-					</div>					
-					<div class="col-sm-4" th:unless="${songRequest.duetUser} == null">
-						<h4>
-							<span class="label label-primary">Duet with</span>
-							<span th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></span>	
-						</h4>						
-					</div>
-					<!-- 
-					<div class="col-sm-4">
-						<h4 th:if="${songRequest.sequence} &lt; 0">
-							<span class="label label-success">PENDING</span>
-							<span> Your request is waiting to be queued.</span>	
-						</h4>	
-						<h4 th:unless="${songRequest.sequence} &lt; 0">
-							<span class="label label-warning">QUEUED</span>
-							<span> You are </span>
-							<span class="label label-primary" th:text="'#' + ${songRequest.sequence} + 1"> in line</span>
-						</h4>						
-					</div>
-					 -->
-				</div>
-			</div>
-			<br/>			
-			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
-				<button type="submit" class="btn btn-danger">
-					 Cancel Request
-				</button>			
-			</form>
-		</div>
-		<a th:href="@{/request/create}" class="btn btn-success">New Song Request</a>
-	</div>		
 	
+	<div class="card mb-3 mt-2">
+		<div class="card-body">
+			<h5 class="card-title text-dark">Next in line</h5>
+			<table class="table table-sm table-borderless">
+			 	<tr th:each="nextRequest, iter : ${nextRequests}">
+			 		<td><span class="badge badge-pill badge-secondary" th:text="${iter.index} + 1"></span></td>
+			 		<td th:unless="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName} + ' and ' + ${nextRequest.duetUser.firstName} + ' ' + ${nextRequest.duetUser.lastName}"></td>
+			 		<td th:if="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName}"></td>
+			 	</tr>
+			 </table>
+			 <button class="btn btn-primary btn-sm btn-block">Create Song Request</button>
+		</div>		
+	</div>
+
+
+<div th:each="songRequest : ${songRequests}" class="card border-light mb-3 bg-transparent">
+  <div class="card-header">
+  	<div class="container">
+	  	<div class="row">
+	  		<div class="col">
+				<h5 th:if="${songRequest.sequence} == -1" class="text-light text-left"><span class="badge badge-secondary">SUBMITTED</span></h5>
+	  			<h5	th:if="${songRequest.sequence} != -1" class="text-light text-left"><span class="badge badge-primary">IN QUEUE</span></h5>  		
+	  		</div>
+	  		<div class="col">
+	  			<h6 th:if="${songRequest.sequence} != -1" class="text-light text-right"># <span class="badge badge-light" th:text="${songRequest.sequence} + 1"></span> IN LINE</h6>
+	  		</div>
+	  	</div>
+  	</div>
+  </div>  
+  <div class="card-body text-secondary">
+    <dl class="row">
+    	<dt class="col-sm-3 h6 text-light">SONG</dt>
+    	<dd class="col-sm-9 text-light" th:text="${songRequest.songName}"></dd>
+    	<dt class="col-sm-3 h6 text-light">ARTIST</dt>
+    	<dd class="col-sm-9 text-light" th:text="${songRequest.artistName}"></dd>
+    	<dt th:unless="${songRequest.duetUser} == null" class="col-sm-3 h6 text-light">DUET WITH</dt>
+    	<dd th:unless="${songRequest.duetUser} == null" class="col-sm-9 text-light" th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></dd>
+    </dl>
+  </div>
+  <div class="card-footer">
+  	<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
+		<button type="submit" class="btn btn-sm btn-block btn-outline-danger">
+			 Cancel Request
+		</button>			
+	</form>
+  </div>
 </div>
 
-<a th:href="@{/vote}" class="btn btn-default">Vote for best performance</a>
 
 </div>
 

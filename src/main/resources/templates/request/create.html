@@ -11,11 +11,11 @@
 <div class="container">
 
 
-<div class="panel panel-info">
- 	<div class="panel panel-heading">
+<div class="card mt-2">
+ 	<div class="card-header">
  		Create Song Request
  	</div>
- 	<div class="panel panel-body"> 	 		
+ 	<div class="card-body"> 	 		
 		 <form th:action="@{/request/create}"  method="post" th:object="${songRequest}">
 			 <div class="form-group">
 			    <label>Song Title:</label>
@@ -37,10 +37,10 @@
 			    	<option value="-1">Select a user to duet with!</option>
 			    	<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName} + ' ' + ${user.lastName}"></option>			    	
 			    </select>				    
-			    <p class="help-block">This field is optional</p>
+			    <small class="form-text text-muted">This field is optional</small>
 			  </div>
-			  <a th:href="@{/home}" class="btn btn-danger">Cancel</a>
-		      <button type="submit" class="btn btn-success">Submit</button>
+			  <a th:href="@{/home}" class="btn btn-outline-secondary">Cancel</a>
+		      <button type="submit" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 </div>

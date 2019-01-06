@@ -10,11 +10,11 @@
 <div class="container">
 
 
-<div class="panel panel-info">
- 	<div class="panel panel-heading">
+<div class="card">
+ 	<div class="card-header">
  		Create Account
  	</div>
- 	<div class="panel panel-body"> 	
+ 	<div class="card-body"> 	
  		<div th:if="${error} != null" class="alert alert-danger">
  			<span class="label label-danger">ERROR</span><h5 th:text="${error}"></h5>
  		</div>
@@ -36,7 +36,7 @@
 			  <div class="form-group">
 			    <label>Password:</label>
 			    <input type="password" th:field="*{password}" class="form-control"/>
-			    <small class="form-text text-muted">Minimum one character. IMPORTANT: Hash and salt has not yet been implemented.  Make up a throw-away password.</small>				    
+			    <small class="form-text text-muted">Minimum one character.</small>				    
 			  </div>
 		      <button type="submit" class="btn btn-primary">Submit</button>		        
 		</form>
