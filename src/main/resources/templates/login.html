@@ -15,13 +15,13 @@
  	<div class="card-body"> 	
 	 	<div th:if="${param.error}">
 			<div class="alert alert-danger">
-				<h5><span class="label label-danger">LOGIN FAILED</span></h5>
+				<h5><span class="badge badge-danger">LOGIN FAILED</span></h5>
 				<h5>Verify that your credentials are correct.</h5>
 			</div>	
 		</div>
 		<div th:if="${param.logout}">
-			<div class="alert alert-info">
-				<h5><span class="label label-primary">LOGOUT SUCCESSFUL</span></h5>
+			<div class="alert alert-primary">
+				<h5><span class="badge badge-primary">LOGOUT SUCCESSFUL</span></h5>
 				<h5>You have been logged out.</h5>
 			</div>
 		</div>
