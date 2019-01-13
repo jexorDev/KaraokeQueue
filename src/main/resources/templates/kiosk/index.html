@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+	<div class="card bg-dark text-white">
+	  <img src="../../images/singers.jpg" class="card-img" alt="singers"></img>
+	  <div class="card-img-overlay">	  		  
+	    
+	  </div>
+	</div>
+	<h1 class="display-4 text-center">Welcome to karaoke night</h1>		
+	
+	<div class="row">
+		<a th:href="@{/user/kiosk/create}" class="col-lg col-md-12 m-2">
+			<div class="card">			
+				<div class="card-body">
+		 			<h5 class="card-title"><i class="far fa-user"></i> Create account</h5>
+		 			<p class="card-text">Create a new account</p>
+		 		</div>				 		
+	 		</div>
+	 	</a>
+	 	<a href="#" class="col-lg col-md-12 m-2">
+		 	<div class="card">		 		
+		 		<div class="card-body">
+		 			<h5 class="card-title"><i class="fas fa-plus"></i> New song request</h5>
+		 			<p class="card-text">Create a new song request</p>
+		 		</div>		 			 		
+		 	</div>
+	 	</a>
+	 	<a href="#" class="col-lg col-md-12 m-2">
+		 	<div class="card">
+		 		<div class="card-body">
+		 			<h5 class="card-title"><i class="far fa-list-alt"></i> Inquiry</h5>
+		 			<p class="card-text">View/cancel your requests</p>
+		 		</div>		 			 		
+		 	</div>
+	 	</a>
+	 	<a href="#" class="col-lg col-md-12 m-2">
+		 	<div class="card">	
+		 		<div class="card-body">
+		 			<h5 class="card-title"><i class="fas fa-vote-yea"></i> Vote</h5>
+		 			<p class="card-text">Vote for singer of the night</p>
+		 		</div>		 				 		
+		 	</div>
+	 	</a>	 	
+	</div>
+ 	
+
+
+</div>
+</body>
+</html>
