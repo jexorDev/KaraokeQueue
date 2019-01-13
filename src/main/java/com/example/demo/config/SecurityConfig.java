@@ -27,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.antMatchers("/user/create").permitAll()
+			.antMatchers("/kiosk").permitAll()
+			.antMatchers("/user/kiosk/create").permitAll()
 			.antMatchers("/admin").hasRole("ADMIN")
 			.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
 		http.exceptionHandling().accessDeniedPage("/403");

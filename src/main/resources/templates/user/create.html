@@ -19,6 +19,7 @@
  			<span class="label label-danger">ERROR</span><h5 th:text="${error}"></h5>
  		</div>
 		 <form th:action="@{/user/create}"  method="post" th:object="${user}">
+		 	<input type="hidden" name="isKiosk" th:value="${isKiosk}"/>
 			 <div class="form-group">
 			    <label>First Name:</label>
 			    <input type="text" th:field="*{firstName}" class="form-control"/>		

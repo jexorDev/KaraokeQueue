@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,12 +40,22 @@ public class UserController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/user/kiosk/create", method=RequestMethod.GET)
+	public ModelAndView kiosk_index()
+	{
+		ModelAndView mv = new ModelAndView("user/create");
+		mv.addObject("user", new User());
+		mv.addObject("isKiosk", true);
+		return mv;
+	}
+	
 	@RequestMapping(value="/user/create", method=RequestMethod.POST)
-	public ModelAndView create(@Valid User user, BindingResult bindingResult)
+	public ModelAndView create(@Valid User user, @RequestParam(value = "isKiosk", required = false) String isKioskParm, BindingResult bindingResult)
 	{		
 		User existingUser = userDao.findByUsername(user.getUsername());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
+		Boolean isKiosk = Boolean.parseBoolean(isKioskParm);
 		
         if (bindingResult.hasErrors() ||
             existingUser != null) 
@@ -70,7 +81,16 @@ public class UserController {
 		userRole.setUsername(user.getUsername());
 		userRole.setRole("ROLE_USER");
 		userRoleDao.save(userRole);
-		return new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");
+		if (isAdmin)
+		{
+			return new ModelAndView("redirect:/admin");
+		}
+		if(isKiosk)
+		{
+			return new ModelAndView("redirect:/kiosk");
+		}
+		
+		return new ModelAndView("redirect:/home");	
 	}
 	
 	
