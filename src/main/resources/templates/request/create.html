@@ -3,13 +3,19 @@
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <div th:replace="fragments/header :: header-css"/>    
+    <script th:src="@{/js/fragments/credentialsModal.js}"></script>
 </head>
 <body>
 
+
 <div th:replace="fragments/header :: header"/>
+
 
 <div class="container">
 
+<th:block th:if="${isKiosk}">
+	<div th:replace="fragments/credentialsModal :: credentialsModal"/>
+</th:block>
 
 <div class="card mt-2">
  	<div class="card-header">
@@ -17,6 +23,7 @@
  	</div>
  	<div class="card-body"> 	 		
 		 <form th:action="@{/request/create}"  method="post" th:object="${songRequest}">
+		     
 			 <div class="form-group">
 			    <label>Song Title:</label>
 			    <input type="text" th:field="*{songName}" class="form-control"/>				    

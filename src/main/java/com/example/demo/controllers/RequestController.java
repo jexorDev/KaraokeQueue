@@ -44,6 +44,19 @@ public class RequestController {
 		return mv;		
 	}
 	
+	@RequestMapping(value="/request/kiosk/create", method=RequestMethod.GET)
+	public ModelAndView kiosk_index() {
+		ModelAndView mv = new ModelAndView("request/create");
+		
+		List<User> users = userDao.findAllByOrderByFirstName();
+		
+		mv.addObject("songRequest", new SongRequest());
+		mv.addObject("users", users);
+		mv.addObject("isKiosk", true);
+		
+		return mv;		
+	}
+	
 	@RequestMapping(value="/request/create", method=RequestMethod.POST)
 	public ModelAndView create(@ModelAttribute SongRequest songRequest) 
 	{		
