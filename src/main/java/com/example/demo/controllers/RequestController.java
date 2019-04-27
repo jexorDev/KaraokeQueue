@@ -62,6 +62,7 @@ public class RequestController {
 	{		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
+		Boolean isKiosk = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_KIOSK") != null;
 		
 		//admin have ability to choose any user
 		if (songRequest.getUser() == null)
@@ -74,7 +75,21 @@ public class RequestController {
 		
 		songRequestDao.save(songRequest);
 		
-		ModelAndView mv = new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");				
+		ModelAndView mv;
+		
+		if (isAdmin)
+		{
+			mv = new ModelAndView("redirect:/admin");	
+		}
+		else if(isKiosk)
+		{			
+			mv = new ModelAndView("redirect:/kiosk");			
+		}
+		else
+		{
+			mv = new ModelAndView("redirect:/home");
+		}
+						
 		return mv;		
 	}
 	

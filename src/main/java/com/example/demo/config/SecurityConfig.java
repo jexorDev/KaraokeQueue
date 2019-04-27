@@ -29,10 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 		.authorizeRequests()
 			.antMatchers("/user/create").permitAll()
-			.antMatchers("/kiosk").permitAll()
-			.antMatchers("/user/kiosk/create").permitAll()
-			.antMatchers("/request/kiosk/create").permitAll()
-			.antMatchers("/user/get/id").permitAll()
+			.antMatchers("/kiosk").hasAuthority("ROLE_KIOSK")
+			.antMatchers("/user/kiosk/create").hasAuthority("ROLE_KIOSK")
+			.antMatchers("/request/kiosk/create").hasAuthority("ROLE_KIOSK")
+			.antMatchers("/user/get/id").hasAuthority("ROLE_KIOSK")
+			.antMatchers("/home").hasRole("USER")
 			.antMatchers("/admin").hasRole("ADMIN")
 			.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
 		http.exceptionHandling().accessDeniedPage("/403");

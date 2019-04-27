@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<div th:fragment="header">
+<div th:fragment="header" sec:authorize="hasRole('ROLE_USER')">
 	<div th:unless="${#httpServletRequest.remoteUser} == null" class="pos-f-t">
 	  <div class="collapse" id="navbarToggleExternalContent">
 	    <div class="bg-dark p-4">
