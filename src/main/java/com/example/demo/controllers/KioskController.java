@@ -40,8 +40,6 @@ public class KioskController {
 	public ModelAndView inquiry()
 	{			
 		ModelAndView mv = new ModelAndView("kiosk/inquiry");
-		List<SongRequest> songRequests = songRequestDao.findAllByOrderBySequence();
-		mv.addObject("songRequests", songRequests);
 		return mv;
 	}
 	
