@@ -36,36 +36,33 @@ public class RequestController {
 	@RequestMapping(value="/request/create", method=RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("request/create");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Boolean isKiosk = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_KIOSK") != null;
 		
 		List<User> users = userDao.findAllByOrderByFirstName();
 		
 		mv.addObject("songRequest", new SongRequest());
 		mv.addObject("users", users);
-		return mv;		
-	}
-	
-	@RequestMapping(value="/request/kiosk/create", method=RequestMethod.GET)
-	public ModelAndView kiosk_index() {
-		ModelAndView mv = new ModelAndView("request/create");
-		
-		List<User> users = userDao.findAllByOrderByFirstName();
-		
-		mv.addObject("songRequest", new SongRequest());
-		mv.addObject("users", users);
-		mv.addObject("isKiosk", true);
-		
+		mv.addObject("isKiosk", isKiosk);
 		return mv;		
 	}
 	
 	@RequestMapping(value="/request/create", method=RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute SongRequest songRequest) 
+	public ModelAndView create(@ModelAttribute SongRequest songRequest, @RequestParam(value="kiosk-user-id", required=false) String userIdFromKiosk) 
 	{		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
+		Boolean isKiosk = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_KIOSK") != null;
 		
-		//admin have ability to choose any user
-		if (songRequest.getUser() == null)
+		if (isKiosk)
 		{
+			User user = userDao.findById(Long.parseLong(userIdFromKiosk));			
+			songRequest.setUser(user);	
+		}
+		else if (!isAdmin)
+		{
+			//admin will have already chosen user
+			//in the case of regular user, need to set user on song request with logged in user
 			User user = userDao.findByUsername(auth.getName());			
 			songRequest.setUser(user);	
 		}
@@ -74,7 +71,21 @@ public class RequestController {
 		
 		songRequestDao.save(songRequest);
 		
-		ModelAndView mv = new ModelAndView(isAdmin ? "redirect:/admin" : "redirect:/home");				
+		ModelAndView mv;
+		
+		if (isAdmin)
+		{
+			mv = new ModelAndView("redirect:/admin");	
+		}
+		else if(isKiosk)
+		{			
+			mv = new ModelAndView("redirect:/kiosk");			
+		}
+		else
+		{
+			mv = new ModelAndView("redirect:/home");
+		}
+						
 		return mv;		
 	}
 	

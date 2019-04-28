@@ -43,20 +43,14 @@ public class UserController {
 	@RequestMapping(value="/user/create", method=RequestMethod.GET)
 	public ModelAndView index()
 	{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Boolean isKiosk = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_KIOSK") != null;
+		
 		ModelAndView mv = new ModelAndView("user/create");
 		mv.addObject("user", new User());
+		mv.addObject("isKiosk", isKiosk);
 		return mv;
 	}
-	
-	@RequestMapping(value="/user/kiosk/create", method=RequestMethod.GET)
-	public ModelAndView kiosk_index()
-	{
-		ModelAndView mv = new ModelAndView("user/create");
-		mv.addObject("user", new User());
-		mv.addObject("isKiosk", true);
-		return mv;
-	}
-	
 	
     @PostMapping("/user/get/id")
     public ResponseEntity<?> getSearchResultViaAjax(

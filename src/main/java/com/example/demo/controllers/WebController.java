@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,6 +15,7 @@ import com.example.demo.models.SongRequest;
 import com.example.demo.models.SongRequestDao;
 import com.example.demo.models.User;
 import com.example.demo.models.UserDao;
+import com.example.demo.models.UserRoleDao;
 
 @Controller
 public class WebController {
@@ -24,6 +25,9 @@ public class WebController {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private UserRoleDao userRoleDao;
 
 	@RequestMapping(value= {"/"})
 	public String index()
@@ -38,20 +42,29 @@ public class WebController {
 
 	@RequestMapping(value= {"/home"})
 	public ModelAndView home()
-	{		
-		ModelAndView mv = new ModelAndView("home");
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
+	{					
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userDao.findByUsername(auth.getName());				
-		boolean isAdmin = auth.getAuthorities().stream().filter(a -> a.getAuthority() == "ROLE_ADMIN").count() > 0;
-		
+		boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
+		boolean isKiosk = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_KIOSK") != null;    
+	  		
 		List<SongRequest> songRequests = songRequestDao.findByUserIdAndIsCompleteOrderById(user.getId(), false);		
 		List<SongRequest> nextRequests = songRequestDao.findTop3BySequenceGreaterThanEqualOrderBySequence(0);
 		Collections.sort(nextRequests, (a,b) -> a.getSequence() > b.getSequence() ? 0 : 1);
 		
-		mv.addObject("songRequests", songRequests);
-		mv.addObject("nextRequests", nextRequests);
-		mv.addObject("isAdmin", isAdmin);
+		ModelAndView mv;
+		
+		if (!isKiosk)
+		{
+			mv = new ModelAndView("home");
+			mv.addObject("songRequests", songRequests);
+			mv.addObject("nextRequests", nextRequests);
+			mv.addObject("isAdmin", isAdmin);			
+		}
+		else
+		{
+			mv = new ModelAndView("kiosk/index");
+		}		
 		
 		return mv;
 	}	
