@@ -74,12 +74,13 @@ public class UserController {
 		
 		if (user != null && user.getPassword().equals(credentials.getPassword())) {
 			result.setMsg("success");
-			result.setResult(user.getId());
+			result.setUserId(user.getId());
+			result.setUserName((user.getFirstName() + ' ' + user.getLastName()).toUpperCase());
 		}
 		else
 		{
 			result.setMsg("no match");
-			result.setResult(-1);
+			result.setUserId(-1);
 		}
      
 

@@ -22,7 +22,8 @@ $(document).ready(function() {
 		        success: function (data) {
 		            
 		            if (data["msg"] == "success") {		            	
-		            	$('#kiosk-user-id').val(data["result"]);	
+		            	$('#kiosk-user-id').val(data["userId"]);	
+		            	$('#inquiry-header').text("Showing requests for " + data['userName']);
 		            	$('#kiosk-user-id').trigger('change');
 		            	$('#kioskLoginModal').modal('hide');
 		            }
