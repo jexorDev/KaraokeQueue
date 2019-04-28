@@ -23,7 +23,7 @@
  	</div>
  	<div class="card-body"> 	 		
 		 <form th:action="@{/request/create}"  method="post" th:object="${songRequest}">
-		     
+		     <input type="hidden" name="kiosk-user-id" id="kiosk-user-id"/>
 			 <div class="form-group">
 			    <label>Song Title:</label>
 			    <input type="text" th:field="*{songName}" class="form-control"/>				    

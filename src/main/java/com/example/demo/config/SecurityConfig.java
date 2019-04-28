@@ -26,14 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
+		http
 		.authorizeRequests()
 			.antMatchers("/user/create").permitAll()
 			.antMatchers("/kiosk").hasAuthority("ROLE_KIOSK")
 			.antMatchers("/user/kiosk/create").hasAuthority("ROLE_KIOSK")
 			.antMatchers("/request/kiosk/create").hasAuthority("ROLE_KIOSK")
 			.antMatchers("/user/get/id").hasAuthority("ROLE_KIOSK")
-			.antMatchers("/home").hasRole("USER")
 			.antMatchers("/admin").hasRole("ADMIN")
 			.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
 		http.exceptionHandling().accessDeniedPage("/403");
