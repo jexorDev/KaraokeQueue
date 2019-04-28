@@ -36,24 +36,14 @@ public class RequestController {
 	@RequestMapping(value="/request/create", method=RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("request/create");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Boolean isKiosk = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_KIOSK") != null;
 		
 		List<User> users = userDao.findAllByOrderByFirstName();
 		
 		mv.addObject("songRequest", new SongRequest());
 		mv.addObject("users", users);
-		return mv;		
-	}
-	
-	@RequestMapping(value="/request/kiosk/create", method=RequestMethod.GET)
-	public ModelAndView kiosk_index() {
-		ModelAndView mv = new ModelAndView("request/create");
-		
-		List<User> users = userDao.findAllByOrderByFirstName();
-		
-		mv.addObject("songRequest", new SongRequest());
-		mv.addObject("users", users);
-		mv.addObject("isKiosk", true);
-		
+		mv.addObject("isKiosk", isKiosk);
 		return mv;		
 	}
 	
