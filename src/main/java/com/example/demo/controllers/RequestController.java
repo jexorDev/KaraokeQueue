@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.models.SongRequest;
 import com.example.demo.models.SongRequestDao;
@@ -57,7 +58,7 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value="/request/create", method=RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute SongRequest songRequest, @RequestParam(value="kiosk-user-id", required=false) String userIdFromKiosk) 
+	public ModelAndView create(@ModelAttribute SongRequest songRequest, @RequestParam(value="kiosk-user-id", required=false) String userIdFromKiosk, RedirectAttributes redirectAttributes) 
 	{		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Boolean isAdmin = userRoleDao.findByUsernameAndRole(auth.getName(), "ROLE_ADMIN") != null;
@@ -80,6 +81,7 @@ public class RequestController {
 		
 		songRequestDao.save(songRequest);
 		
+				
 		ModelAndView mv;
 		
 		if (isAdmin)
@@ -87,11 +89,18 @@ public class RequestController {
 			mv = new ModelAndView("redirect:/admin");	
 		}
 		else if(isKiosk)
-		{			
+		{
+			redirectAttributes.addFlashAttribute("strongMessage", "Request submitted");
+			redirectAttributes.addFlashAttribute("mainMessage", "You can monitor the status of your request by doing an inquiry at the kiosk or logging into your account from your mobile device.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert-primary");
 			mv = new ModelAndView("redirect:/kiosk");			
 		}
 		else
 		{
+			redirectAttributes.addFlashAttribute("strongMessage", "Request submitted");
+			redirectAttributes.addFlashAttribute("mainMessage", "You can monitor the status by refreshing this page.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert-primary");
+			
 			mv = new ModelAndView("redirect:/home");
 		}
 						

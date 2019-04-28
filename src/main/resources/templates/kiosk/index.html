@@ -9,13 +9,17 @@
 
 <div class="container">
 	<div class="card bg-dark text-white">
-	  <img src="../../images/singers.jpg" class="card-img" alt="singers"></img>
-	  <div class="card-img-overlay">	  		  
-	    
-	  </div>
+		<img src="../../images/singers.jpg" class="card-img" alt="singers"></img>
+		<div class="card-img-overlay">
+			<div th:if="${strongMessage}">
+				<div th:replace="fragments/alert :: alert" ></div>
+			</div>
+			
+		</div>
 	</div>
-	<h1 class="display-4 text-center">Welcome to karaoke night</h1>		
+	<h1 class="display-4 text-center">Welcome to karaoke night</h1>
 	
+
 	<div class="row">
 		<a th:href="@{/user/create}" class="col-lg col-md-12 m-2">
 			<div class="card">			

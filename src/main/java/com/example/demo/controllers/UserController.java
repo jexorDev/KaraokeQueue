@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.models.Credentials;
 import com.example.demo.models.CredentialsAjaxResponseBody;
@@ -88,7 +89,7 @@ public class UserController {
     
 	
 	@RequestMapping(value="/user/create", method=RequestMethod.POST)
-	public ModelAndView create(@Valid User user, @RequestParam(value = "isKiosk", required = false) String isKioskParm, BindingResult bindingResult)
+	public ModelAndView create(@Valid User user, @RequestParam(value = "isKiosk", required = false) String isKioskParm, BindingResult bindingResult, RedirectAttributes redirectAttributes)
 	{		
 		User existingUser = userDao.findByUsername(user.getUsername());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -119,16 +120,24 @@ public class UserController {
 		userRole.setUsername(user.getUsername());
 		userRole.setRole("ROLE_USER");
 		userRoleDao.save(userRole);
+		
 		if (isAdmin)
 		{
 			return new ModelAndView("redirect:/admin");
 		}
 		if(isKiosk)
 		{
+			redirectAttributes.addFlashAttribute("strongMessage", "Account created");
+			redirectAttributes.addFlashAttribute("mainMessage", "You can begin submitting song requests by using the kiosk or logging into your account from your mobile device.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert-primary");
+			
 			return new ModelAndView("redirect:/kiosk");
 		}
-		
-		return new ModelAndView("redirect:/home");	
+		else
+		{
+			return new ModelAndView("redirect:/home");
+		}		
+			
 	}
 	
 	
