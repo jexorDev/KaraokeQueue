@@ -29,10 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 		.authorizeRequests()
 			.antMatchers("/user/create").permitAll()
-			.antMatchers("/kiosk").hasAuthority("ROLE_KIOSK")
-			.antMatchers("/user/kiosk/create").hasAuthority("ROLE_KIOSK")
-			.antMatchers("/request/kiosk/create").hasAuthority("ROLE_KIOSK")
-			.antMatchers("/user/get/id").hasAuthority("ROLE_KIOSK")
+			.antMatchers("/kiosk").hasAuthority("ROLE_KIOSK")		
+			.antMatchers("/kiosk/inquiry").hasAuthority("ROLE_KIOSK")
+			.antMatchers("/user/get/id").hasAuthority("ROLE_KIOSK")			
 			.antMatchers("/admin").hasRole("ADMIN")
 			.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
 		http.exceptionHandling().accessDeniedPage("/403");

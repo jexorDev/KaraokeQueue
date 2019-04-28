@@ -36,4 +36,11 @@ public class KioskController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/kiosk/inquiry", method=RequestMethod.GET)
+	public ModelAndView inquiry()
+	{			
+		ModelAndView mv = new ModelAndView("kiosk/inquiry");
+		return mv;
+	}
+	
 }
