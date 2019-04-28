@@ -24,40 +24,7 @@
 		</div>		
 	</div>
 
-
-<div th:each="songRequest : ${songRequests}" class="card border-light mb-3 bg-transparent">
-  <div class="card-header">
-  	<div class="container">
-	  	<div class="row">
-	  		<div class="col">
-				<h5 th:if="${songRequest.sequence} == -1" class="text-light text-left"><span class="badge badge-secondary">SUBMITTED</span></h5>
-	  			<h5	th:if="${songRequest.sequence} != -1" class="text-light text-left"><span class="badge badge-primary">IN QUEUE</span></h5>  		
-	  		</div>
-	  		<div class="col">
-	  			<h6 th:if="${songRequest.sequence} != -1" class="text-light text-right"># <span class="badge badge-light" th:text="${songRequest.sequence} + 1"></span> IN LINE</h6>
-	  		</div>
-	  	</div>
-  	</div>
-  </div>  
-  <div class="card-body text-secondary">
-    <dl class="row">
-    	<dt class="col-sm-3 h6 text-light">SONG</dt>
-    	<dd class="col-sm-9 text-light" th:text="${songRequest.songName}"></dd>
-    	<dt class="col-sm-3 h6 text-light">ARTIST</dt>
-    	<dd class="col-sm-9 text-light" th:text="${songRequest.artistName}"></dd>
-    	<dt th:unless="${songRequest.duetUser} == null" class="col-sm-3 h6 text-light">DUET WITH</dt>
-    	<dd th:unless="${songRequest.duetUser} == null" class="col-sm-9 text-light" th:text="${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></dd>
-    </dl>
-  </div>
-  <div class="card-footer">
-  	<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
-		<button type="submit" class="btn btn-sm btn-block btn-outline-danger">
-			 Cancel Request
-		</button>			
-	</form>
-  </div>
-</div>
-
+	<div th:replace="fragments/requestsList :: requestsList"/>	
 
 </div>
 

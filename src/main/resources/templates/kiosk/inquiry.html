@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <script th:src="@{/js/fragments/credentialsModal.js}"></script>
+</head>
+<body>
+
+<div class="container">
+	<input type="hidden" id="kiosk-user-id"/>
+	<div th:replace="fragments/credentialsModal :: credentialsModal"/>
+	
+	<h1 class="display-4 text-light">Showing your song requests</h1>
+	
+	<a th:href="@{/kiosk}" class="btn btn-primary btn-lg btn-block mb-2">Done</a>
+	
+	<div id="song-requests-list"></div>
+
+</div>
+</body>
+</html>

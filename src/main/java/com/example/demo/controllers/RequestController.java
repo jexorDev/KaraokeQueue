@@ -32,6 +32,15 @@ public class RequestController {
 	
 	@Autowired
 	private UserRoleDao userRoleDao;
+	
+	@RequestMapping(value="/request/view/{userId}", method=RequestMethod.GET)
+	public ModelAndView view(@PathVariable(value="userId") String userId) {
+		ModelAndView mv = new ModelAndView("fragments/requestsList");
+		List<SongRequest> songRequests = songRequestDao.findByUserIdAndIsCompleteOrderById(Long.parseLong(userId),  false);				
+		mv.addObject("songRequests", songRequests);
+		
+		return mv;		
+	}
 		
 	@RequestMapping(value="/request/create", method=RequestMethod.GET)
 	public ModelAndView index() {
