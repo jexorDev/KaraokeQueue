@@ -22,7 +22,7 @@ public interface UserDao extends CrudRepository<User, Long> {
 
     public List<User> findAllByOrderByFirstName();
     public List<User> findAll();
-    public List<User> findAllByVoteNotNull();
-    public User findByUsername(String username);
+    public List<User> findAllByVoteNotNull();    
+    public User findByUsername(String username);    
     public User findById(long id);
 } 

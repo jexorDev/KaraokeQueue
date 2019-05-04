@@ -1,44 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/header :: header-css"/>    
+    <div th:replace="fragments/header :: header-css"/> 
+    <script th:src="@{/js/fragments/credentialsModal.js}"></script>   
 </head>
 <body>
 
 <div th:replace="fragments/header :: header"/>
 
+<th:block th:if="${isKiosk}">
+	<div th:replace="fragments/credentialsModal :: credentialsModal"/>
+</th:block>
+
 <div class="container">
-
-
-<div class="panel panel-info">
- 	<div class="panel panel-heading">
- 		Vote for best performance of the evening<br/>
- 		<small class="form-text text-muted">Note that voting is broken out at the song level for your reference to each performance. Final calculation will sum votes by contestant.</small>
- 	</div>
- 	<table class="table table-condensed table-striped table-hover">
-		<tr>
-			<th>Contestant</th>
-			<th>Song</th>
-			<th>Vote</th>					
-		</tr>
-		<tr th:each="songToVoteOn : ${songsToVoteOn}" class="well well-sm">
-			<td th:text="${songToVoteOn.user.firstName} + ' ' + ${songToVoteOn.user.lastName}"></td>
-			<td th:text="${songToVoteOn.songName}"></td>			
-			<td>
-				<th:block th:if="${user.vote?.id} == ${songToVoteOn.id}">
-					<label class="label label-success">Vote Saved</label>
-				</th:block>
-				<th:block th:unless="${user.vote?.id} == ${songToVoteOn.id}">
-					<form th:action="@{/vote/} + ${songToVoteOn.id}" method="POST" style="display:inline-block">	 
-						<button class="btn btn-danger" type="submit">Vote</button>								 		
-					</form>	
-				</th:block>
-																
-			</td>	
-		</tr>	
-	</table>
-</div>
-     
+	<div class="row" th:if="${isKiosk}">
+		<div class="col-2">			
+			<a th:href="@{/home}" class="btn btn-primary btn-lg btn-block mt-3"><i class="fas fa-chevron-circle-left"></i> Back</a>
+		</div>
+		<div class="col-10">
+			<h2 class="display-4 text-light">Cast vote for best performance</h2>		
+		</div>
+	</div>	
+	
+	<input type="hidden" id="kiosk-user-id" />
+	<div th:replace="fragments/voteList :: voteList"></div>
+	
  
 </div>
 

@@ -20,7 +20,7 @@
 			 		<td th:if="${nextRequest.duetUser} == null" th:text="${nextRequest.user.firstName} + ' ' + ${nextRequest.user.lastName}"></td>
 			 	</tr>
 			 </table>
-			 <button class="btn btn-primary btn-sm btn-block">Create Song Request</button>
+			 <a th:href="@{/request/create}" class="btn btn-primary btn-sm btn-block">Create Song Request</a>
 		</div>		
 	</div>
 

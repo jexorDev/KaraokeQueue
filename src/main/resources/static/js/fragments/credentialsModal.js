@@ -65,6 +65,28 @@ $(document).ready(function() {
 					        }
 					    });
 				 }
+		 
+		 if ($("#vote-list").length) {
+			 
+			 $.ajax({
+			        type: "GET",
+			        contentType: "html",
+			        url: "/vote/" + $("#kiosk-user-id").val(),      
+			        data: {},
+			        cache: false,
+			        timeout: 600000,
+			        success: function (data) {
+			            
+			        	$("#vote-list").replaceWith(data);
+			        			
+			        },
+			        error: function (e) {
+	
+			            console.log("ERROR : ", e);
+	
+			        }
+			    });
+		 }
 	});
 });
 

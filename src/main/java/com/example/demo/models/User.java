@@ -48,8 +48,8 @@ public class User implements Comparable {
 	private String lastName;
 	
     @OneToOne
-    @JoinColumn(name="voted_song", referencedColumnName="song_request_id")
-    private SongRequest vote;
+    @JoinColumn(name="voted_user", referencedColumnName="user_id")
+    private User vote;
 	
 	public String getFirstName() {
 		return firstName;
@@ -104,11 +104,11 @@ public class User implements Comparable {
 		this.password = password;
 	}	
 
-	public SongRequest getVote() {
+	public User getVote() {
 		return vote;
 	}
 
-	public void setVote(SongRequest vote) {
+	public void setVote(User vote) {
 		this.vote = vote;
 	}
 
