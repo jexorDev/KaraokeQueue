@@ -42,25 +42,29 @@ public class VotesController {
 	{
 		ModelAndView mv = new ModelAndView("votes/index");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userDao.findByUsername(auth.getName());
+		User votingUser = userDao.findByUsername(auth.getName());
 		List<SongRequest> songsToVoteOn = songRequestDao.findAllByIsCompleteOrderBySequenceAscIdAsc(true)
 				.stream()
-				.filter(x -> x.getUser().getUsername() != user.getUsername())
+				.filter(x -> x.getUser().getUsername() != votingUser.getUsername())
 				.collect(Collectors.toList());
+		Map<User, List<SongRequest>> userSongMap = songsToVoteOn
+				.stream()
+				.collect(Collectors.groupingBy(SongRequest::getUser, Collectors.toList()));
+				
+		mv.addObject("userSongMap", userSongMap);
+		mv.addObject("votingUser", votingUser);
 		
-		mv.addObject("songsToVoteOn", songsToVoteOn);
-		mv.addObject("user", user);
 		return mv;
 	}
 
 	@RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
 	public ModelAndView process(@PathVariable("id") String id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userDao.findByUsername(auth.getName());
-		SongRequest songRequest = songRequestDao.findOne(Long.parseLong(id));
+		User votingUser = userDao.findByUsername(auth.getName());
+		User votedForUser = userDao.findById(Long.parseLong(id));
 
-		user.setVote(songRequest);
-		userDao.save(user);
+		votingUser.setVote(votedForUser);
+		userDao.save(votingUser);
 
 		return new ModelAndView("redirect:/home");
 	}
@@ -78,7 +82,7 @@ public class VotesController {
 		{
 			long votes = users
 					.stream()
-					.filter(x -> x.getVote() != null && x.getVote().getUser().getUsername().equals(user.getUsername()))					
+					.filter(x -> x.getVote() != null && x.getUsername().equals(user.getUsername()))					
 					.count();
 			
 			results.add(new VoteResultDto(user, votes));

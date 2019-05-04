@@ -1,16 +1,16 @@
 <div th:fragment="requestsList">
 <div class="row">
-	<div th:each="songRequest : ${songRequests}" class="card border-light m-3 bg-transparent col-lg-5">
+	<div th:each="songRequest : ${songRequests}" class="card border-light mt-2 bg-transparent col-lg-12">
 	  <div class="card-header">
 	  	<div class="container">
 		  	<div class="row">
-		  		<div class="col">
+		  		<div class="col-lg-9 col-sm-6">
 					<h5 th:if="${songRequest.sequence} == -1" class="text-light text-left"><span class="badge badge-secondary">SUBMITTED</span></h5>
 		  			<h6	th:if="${songRequest.sequence} != -1" class="text-light text-left"># <span class="badge badge-light" th:text="${songRequest.sequence} + 1"></span> IN LINE</h6>  		
 		  		</div>
-		  		<div class="col">
+		  		<div class="col-lg-3 col-sm-6">
 		  			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
-						<button type="submit" class="btn btn-sm btn-block btn-outline-danger">
+						<button type="submit" class="btn btn-sm btn-block btn-outline-danger float-right">
 							 Cancel
 						</button>			
 					</form>
