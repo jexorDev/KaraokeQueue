@@ -1,0 +1,30 @@
+<div th:fragment="voteList" id="vote-list">
+	<div th:each="user : ${userSongMap}">
+		<div class="card border-light mt-2 bg-transparent">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-9">
+						<p th:text="${user.key.firstName} + ' ' + ${user.key.lastName}" class="text-light"></p>
+					</div>
+					<div class="col-3">
+						<th:block th:unless="${votingUser.vote?.id} == ${user.key.id}">
+							<form th:action="@{/vote/} + ${user.key.id}" method="POST">
+								<input type="hidden" name="voting-user-id" id="voting-user-id" th:value="${votingUser.id}"/>	 
+								<button class="btn btn-outline-success float-right" type="submit">Cast Vote</button>								 		
+							</form>	
+						</th:block>		
+						<th:block th:if="${votingUser.vote?.id} == ${user.key.id}">
+							<h5 class="text-light text-left"><span class="badge badge-success float-right">VOTE CASTED</span></h5>
+						</th:block>
+					</div>
+								
+				</div>
+			</div>
+			<div class="card-body text-light">
+				<ul>
+					<li th:each="song : ${user.value}" th:text="${song.songName} + ', ' + ${song.artistName}"></li>
+				</ul>
+			</div>		
+		</div>
+	</div>
+</div>
