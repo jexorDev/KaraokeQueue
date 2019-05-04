@@ -3,10 +3,10 @@
 		<div class="card border-light mt-2 bg-transparent">
 			<div class="card-header">
 				<div class="row">
-					<div class="col-9">
-						<p th:text="${user.key.firstName} + ' ' + ${user.key.lastName}" class="text-light"></p>
+					<div class="col">
+						<h5 th:text="${user.key.firstName} + ' ' + ${user.key.lastName}" class="text-light"></h5>
 					</div>
-					<div class="col-3">
+					<div class="col">
 						<th:block th:unless="${votingUser.vote?.id} == ${user.key.id}">
 							<form th:action="@{/vote/} + ${user.key.id}" method="POST">
 								<input type="hidden" name="voting-user-id" id="voting-user-id" th:value="${votingUser.id}"/>	 
