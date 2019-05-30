@@ -21,6 +21,14 @@
 	  <div class="collapse" id="navbarToggleExternalContent">
 	    <div class="bg-dark p-4">
 	      	<ul class="list-group">
+	      		<div sec:authorize="hasRole('ROLE_ADMIN')">
+		      		<li class="list-group-item list-group-item-action list-group-item-light">
+						<a th:href="@{/admin}" class="text-dark" style="display:inline-block">Dashboard</a>
+					</li>
+					<li class="list-group-item list-group-item-action list-group-item-light">
+						<a th:href="@{/vote/results}" class="text-dark" style="display:inline-block">Vote Results</a>
+					</li>
+	      		</div>      		
 			  	<li class="list-group-item list-group-item-action list-group-item-light">
 					<a th:href="@{/}" class="text-dark" style="display:inline-block">Song Requests</a>
 				</li>

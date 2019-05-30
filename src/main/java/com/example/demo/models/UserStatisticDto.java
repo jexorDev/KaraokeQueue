@@ -14,13 +14,13 @@ public class UserStatisticDto {
 	
 	public String getRowColor() {		
 		if (completedRelative >= 50 && pendingRelative < 50)
-			return "danger";
+			return "bg-danger";
 		else if (queuedRelative > 50)
-			return "warning";
+			return "bg-warning";
 		else if (pendingRelative == 0 && completedRelative == 0 && queuedRelative == 0)
 			return "";
 		else
-			return "success";
+			return "bg-success";
 	}
 	public void setRowColor(String rowColor) {
 		this.rowColor = rowColor;
