@@ -8,7 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +57,48 @@ public class AdminController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/admin/requests", method=RequestMethod.GET)
+	public ModelAndView requests()
+	{
+		UserService userService = new UserService(userDao, songRequestDao);
+		
+		ModelAndView mv = new ModelAndView("fragments/admin/currentRequests");
+		
+		List<SongRequest> allRequests = songRequestDao.findAllByOrderBySequence();				
+		List<SongRequest> pendingRequests = songRequestDao.findAllByIsCompleteOrderBySequenceAscIdAsc(false);
+				
+		float pendingPercent = 100 * ((float)pendingRequests.spliterator().getExactSizeIfKnown() / allRequests.spliterator().getExactSizeIfKnown());
+		float completePercent = 100 - pendingPercent;
+		
+		mv.addObject("users", userDao.findAllByOrderByFirstName());
+		mv.addObject("currentRequests", pendingRequests);
+		mv.addObject("pendingPercent", pendingPercent);
+		mv.addObject("completePercent", completePercent);
+		mv.addObject("userStatistics", userService.GetUserStatistics());
+		return mv;
+	}
+	
+	@RequestMapping(value="/admin/statistics", method=RequestMethod.GET)
+	public ModelAndView statistics()
+	{
+		UserService userService = new UserService(userDao, songRequestDao);
+		
+		ModelAndView mv = new ModelAndView("fragments/admin/statistics");
+		
+		List<SongRequest> allRequests = songRequestDao.findAllByOrderBySequence();				
+		List<SongRequest> pendingRequests = songRequestDao.findAllByIsCompleteOrderBySequenceAscIdAsc(false);
+				
+		float pendingPercent = 100 * ((float)pendingRequests.spliterator().getExactSizeIfKnown() / allRequests.spliterator().getExactSizeIfKnown());
+		float completePercent = 100 - pendingPercent;
+		
+		mv.addObject("users", userDao.findAllByOrderByFirstName());
+		mv.addObject("currentRequests", pendingRequests);
+		mv.addObject("pendingPercent", pendingPercent);
+		mv.addObject("completePercent", completePercent);
+		mv.addObject("userStatistics", userService.GetUserStatistics());
+		return mv;
+	}
+	
 	@RequestMapping(value="/admin/complete/{id}", method=RequestMethod.POST)
 	public ModelAndView complete(@PathVariable("id") String id)
 	{
@@ -65,16 +110,19 @@ public class AdminController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/admin/queue/{id}", method=RequestMethod.POST)
-	public ModelAndView complete(@PathVariable("id") String id, @RequestParam(value="sequence", required=false) String sequence)
+	@PostMapping(value="/admin/queue/{id}")
+	public ResponseEntity<?> complete(@PathVariable("id") String id, @RequestBody String body)
 	{
+		if (body == null)
+		{
+			return ResponseEntity.badRequest().body("Request sequence was not provided.");
+		}
+		
 		SongRequestService songRequestService = new SongRequestService(userDao, songRequestDao);				
 				
-		songRequestService.QueueRequest(id, sequence, false);
+		songRequestService.QueueRequest(id, body, false);
 		
-		
-		ModelAndView mv = new ModelAndView("redirect:/admin");		
-		return mv;
+		return ResponseEntity.ok("");
 	}
 	
 	@RequestMapping(value="/admin/resequence", method=RequestMethod.GET)

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/header :: header-css"/>
-    <script th:src="@{/js/SongRequest/songRequest.js}"></script>
+    <div th:replace="fragments/header :: header-css"/>    
+    <script th:src="@{/js/fragments/admin/currentRequests.js}"></script>
 </head>
 <body>
 
@@ -10,112 +10,18 @@
 
 <div class="container-fluid">
 
-	<h1 class="display-4 text-light">Current Requests</h1>
-
-	<table class="table table-dark table-condensed table-striped table-hover">		
-		<tr>			
-			<th>Seq</th>
-			<th>User</th>					
-			<th>Song</th>
-			<th>Artist</th>
-			<th>Options</th>			
-		</tr>
-		<tr th:each="songRequest : ${currentRequests}" th:unless="${songRequest.sequence} == -1" class="well well-sm">			
-			<td><span class="badge badge-secondary" th:text="${songRequest.sequence}"></span></td>
-			<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName} + ' and ' + ${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
-			<td th:if="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>										
-			<td th:text="${songRequest.songName}"></td>
-			<td th:text="${songRequest.artistName}"></td>
-			<td>
-				<form th:action="@{/admin/queue/} + ${songRequest.id}" method="POST" style="display:inline-block">	 
-					<div class="input-group">
-						<input type="text" class="form-control" style="width:55px" placeholder="Seq" name="sequence"></input>
-						<div class="input-group-append">
-							<button class="btn btn-secondary" type="submit">Bump</button>
-						</div>   						
-  					</div>								 		
-				</form>			
-				<form th:action="@{/admin/complete/} + ${songRequest.id}" method="POST" style="display:inline-block">
-					<div class="input-group">
-						<button type="submit" class="btn btn-primary">
-							 Complete
-						</button>
-					</div>									
-				</form>		
-				<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST" style="display:inline-block">
-					<div class="input-group">
-						<button type="submit" class="btn btn-outline-primary">
-							 Cancel
-						</button>
-					</div>									
-				</form>							
-			</td>	
-		</tr>
-		<tr th:each="songRequest : ${currentRequests}" th:if="${songRequest.sequence} == -1" class="well well-sm">			
-			<td><span class="badge badge-light" th:text="${songRequest.id}"></span></td>		
-			<td th:unless="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName} + ' and ' + ${songRequest.duetUser.firstName} + ' ' + ${songRequest.duetUser.lastName}"></td>
-			<td th:if="${songRequest.duetUser} == null" th:text="${songRequest.user.firstName} + ' ' + ${songRequest.user.lastName}"></td>
-			<td th:text="${songRequest.songName}"></td>
-			<td th:text="${songRequest.artistName}"></td>
-			<td>
-				<form th:action="@{/admin/queue/} + ${songRequest.id}" method="POST" style="display:inline-block">	 
-					<div class="input-group">
-						<input type="text" class="form-control" style="width:55px" placeholder="Seq" name="sequence"></input>
-						<div class="input-group-append">						
-							<button class="btn btn-outline-secondary" type="submit">Queue</button>
-	  					</div>
-					</div>													 		
-				</form>			
-				<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST" style="display:inline-block">
-					<div class="input-group">
-						<button type="submit" class="btn btn-outline-primary">
-							 Cancel
-						</button>
-					</div>									
-				</form>								
-			</td>	
-		</tr>		
-	</table>
-
-
-	<h1 class="display-4 text-light">User Statistics</h1>
-	
-	<table class="table table-dark table-condensed table-striped table-hover">
-		<tr>
-			<th>Name</th>
-			<th>Pending</th>
-			<th>Queued</th>
-			<th>Completed</th>
-			<th>Relative Pending</th>
-			<th>Relative Queued</th>
-			<th>Relative Completed</th>
-		</tr>
-		<div th:each="userStatistic : ${userStatistics}">
-		<tr th:class="${userStatistic.getRowColor()}">
-			<td th:text="${userStatistic.user.firstName} + ' ' + ${userStatistic.user.lastName}"></td>
-			<td th:text="${userStatistic.songsPending}"></td>
-			<td th:text="${userStatistic.songsQueued}"></td>
-			<td th:text="${userStatistic.songsCompleted}"></td>
-			<td>
-				<div class="progress">
-  					<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" th:style="'width: ' + ${userStatistic.pendingRelative} + '%'"></div>  					
-				</div>
-			</td>
-			<td>
-				<div class="progress">
-  					<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" th:style="'width: ' + ${userStatistic.queuedRelative} + '%'"></div>
-				</div>
-			</td>
-			<td>
-				<div class="progress">
-  					<div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" th:style="'width: ' + ${userStatistic.completedRelative} + '%'"></div>
-				</div>
-			</td>
-		</tr>
+	<div class="row">
+		<h1 class="display-4 text-light col">Current Requests</h1>
+		<div class="col">
+		<button class="btn btn-primary" onClick="reloadRequests()"><i class="fas fa-sync"></i> Refresh</button>
 		</div>
-	</table>
+			
+	</div>
+	
+	<div th:replace="fragments/admin/currentRequests :: currentRequests"/>
 
-
+	<h1 class="display-4 text-light">User Statistics</h1>	
+	<div th:replace="fragments/admin/statistics :: statistics"/>
 
 </div>
 
