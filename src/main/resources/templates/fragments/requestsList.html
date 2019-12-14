@@ -1,19 +1,19 @@
 <div th:fragment="requestsList">
-
+	
 	<div th:each="songRequest : ${songRequests}" class="card border-light mt-2 bg-transparent">
 	  <div class="card-header">
 		  	<div class="row">
 		  		<div class="col">
 					<h5 th:if="${songRequest.sequence} == -1" class="text-light text-left"><span class="badge badge-secondary">SUBMITTED</span></h5>
 		  			<h6	th:if="${songRequest.sequence} != -1" class="text-light text-left"># <span class="badge badge-light" th:text="${songRequest.sequence} + 1"></span> IN LINE</h6>  		
-		  		</div>
+		  		</div>		  	
 		  		<div class="col">
-		  			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
+		  			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST" th:if="${songRequest.sequence == -1}">			 
 						<button type="submit" class="btn btn-sm btn-block btn-outline-danger float-right" style="max-width:100px">
 							 Cancel
 						</button>			
 					</form>
-		  		</div>
+		  		</div>	  		 
 		  	</div>
 	  </div>  
 	  <div class="card-body text-secondary">
