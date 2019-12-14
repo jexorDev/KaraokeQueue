@@ -8,7 +8,7 @@
 		  			<h6	th:if="${songRequest.sequence} != -1" class="text-light text-left"># <span class="badge badge-light" th:text="${songRequest.sequence} + 1"></span> IN LINE</h6>  		
 		  		</div>
 		  		<div class="col">
-		  			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST">			 
+		  			<form th:action="@{/request/delete/} + ${songRequest.id}" method="POST" th:if="${songRequest.sequence == -1}">			 
 						<button type="submit" class="btn btn-sm btn-block btn-outline-danger float-right" style="max-width:100px">
 							 Cancel
 						</button>			
